@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface DespesaRepository : CrudRepository<Despesa, String> {
-    fun findByName(name: String): Despesa?
+    fun findByCategoryName(name: String): Despesa?
 }

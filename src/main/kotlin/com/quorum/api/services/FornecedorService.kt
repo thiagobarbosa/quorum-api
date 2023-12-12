@@ -37,11 +37,11 @@ class FornecedorService(
             val formattedCnpj = it.cnpj.replace(".", "").replace("/", "").replace("-", "")
             fornecedorRepository.findByCnpj(formattedCnpj)
                 ?: fornecedorRepository.save(
-                Fornecedor(
-                    cnpj = formattedCnpj,
-                    name = it.fornecedor
+                    Fornecedor(
+                        cnpj = formattedCnpj,
+                        name = it.fornecedor
+                    )
                 )
-            )
         }
     }
 

@@ -34,7 +34,7 @@ class ReembolsoService(
 
         return responseObj.items.map {
             val formattedCnpj = it.cnpj.replace(".", "").replace("/", "").replace("-", "")
-            val despesa = despesaService.getDespesaByName(it.despesaName) ?: despesaService.createDespesa(Despesa(name = it.despesaName))
+            val despesa = despesaService.getDespesaByName(it.despesaName) ?: despesaService.createDespesa(Despesa(categoryName = it.despesaName))
             val vereador = vereadorService.getVereadorByName(it.vereadorName) ?: vereadorService.createVereador(Vereador(id = it.idVereador, name = it.vereadorName))
             val fornecedor = fornecedorService.getFornecedorByCnpj(formattedCnpj) ?: fornecedorService.createFornecedor(
                 Fornecedor(cnpj = formattedCnpj, name = it.fornecedor)
@@ -48,7 +48,7 @@ class ReembolsoService(
                     tipoDepartamento = it.tipoDepartamento,
                     ano = it.ano,
                     mes = it.mes,
-                    despesaName = despesa.name,
+                    despesaName = despesa.categoryName,
                     despesaId = despesa.id,
                     cnpj = fornecedor.cnpj,
                     fornecedor = fornecedor.name,

@@ -27,7 +27,7 @@ class DespesaService(
     }
 
     fun getDespesaByName(name: String): Despesa? {
-        return despesaRepository.findByName(name)
+        return despesaRepository.findByCategoryName(name)
     }
 
     @Transactional
@@ -38,8 +38,8 @@ class DespesaService(
 
         val distinctDespesas = responseObj.items.distinctBy { it.despesaName }
         return distinctDespesas.map {
-            despesaRepository.findByName(it.despesaName)
-                ?: despesaRepository.save(Despesa(name = it.despesaName))
+            despesaRepository.findByCategoryName(it.despesaName)
+                ?: despesaRepository.save(Despesa(categoryName = it.despesaName))
         }
     }
 
