@@ -39,4 +39,20 @@ class ReembolsoService(
             )
         }
     }
+
+    fun getAllReembolsos(): List<ItemReembolso> {
+        return reembolsoRepository.findAll().toList()
+    }
+
+    fun getReembolsosByIdVereador(id: String): List<ItemReembolso> {
+        return reembolsoRepository.findAllByIdVereador(id)
+    }
+
+    fun getReembolsosByDespesa(despesa: String): List<ItemReembolso> {
+        return reembolsoRepository.findAllByDespesa(despesa)
+    }
+
+    fun getReembolsosByFornecedor(fornecedor: String): List<ItemReembolso> {
+        return reembolsoRepository.findAllByCnpj(fornecedor)
+    }
 }

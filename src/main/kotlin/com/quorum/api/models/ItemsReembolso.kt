@@ -4,6 +4,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty
 import org.springframework.data.annotation.Id
 import org.springframework.data.redis.core.RedisHash
+import org.springframework.data.redis.core.index.Indexed
 import java.util.*
 
 data class ItemsReembolso(
@@ -17,22 +18,25 @@ data class ItemReembolso(
     @Id
     val id: String = UUID.randomUUID().toString(),
     @JacksonXmlProperty(localName = "Chave")
+    @Indexed
     val idVereador: String,
+    @JacksonXmlProperty(localName = "VEREADOR")
+    val vereador: String,
     @JacksonXmlProperty(localName = "CENTROCUSTOSID")
     val centroCustosId: Double,
     @JacksonXmlProperty(localName = "DEPARTAMENTO")
     val departamento: String,
     @JacksonXmlProperty(localName = "TIPODEPARTAMENTO")
     val tipoDepartamento: Int,
-    @JacksonXmlProperty(localName = "VEREADOR")
-    val vereador: String,
     @JacksonXmlProperty(localName = "ANO")
     val ano: Int,
     @JacksonXmlProperty(localName = "MES")
     val mes: Int,
     @JacksonXmlProperty(localName = "DESPESA")
+    @Indexed
     val despesa: String,
     @JacksonXmlProperty(localName = "CNPJ")
+    @Indexed
     val cnpj: String,
     @JacksonXmlProperty(localName = "FORNECEDOR")
     val fornecedor: String,
