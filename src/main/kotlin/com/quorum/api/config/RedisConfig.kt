@@ -28,7 +28,7 @@ class RedisConfig {
     fun redisTemplate(): RedisTemplate<String, Any> {
         val connectionFactory = lettuceConnectionFactory()
         val template = RedisTemplate<String, Any>()
-        template.connectionFactory = connectionFactory
+        template.setConnectionFactory(connectionFactory)
         template.setDefaultSerializer(StringRedisSerializer())
         template.afterPropertiesSet()
         return template
