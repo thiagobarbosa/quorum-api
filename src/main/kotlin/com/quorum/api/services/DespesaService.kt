@@ -23,6 +23,8 @@ class DespesaService(
 
     @Transactional
     fun updateDespesas(ano: String, mes: String): List<Despesa> {
+        // Since the source API doesn't have a unique identifier for each item, we need to delete all
+        despesaRepository.deleteAll()
         val url = obterDebitoVereador
         val xmlResponse = makePostRequest(url, ano, mes)
         val responseObj = parseXmlResponse(xmlResponse)
