@@ -13,8 +13,17 @@ class VereadorService(
     private val vereadorRepository: VereadorRepository
 ) {
 
+    @Transactional
+    fun deleteAllVereadores() {
+        vereadorRepository.deleteAll()
+    }
+
     fun getVereadorById(id: String): Vereador? {
         return vereadorRepository.findById(id).orElse(null)
+    }
+
+    fun getVereadorByName(name: String): Vereador? {
+        return vereadorRepository.findByName(name)
     }
 
     fun getAllVereadores(): List<Vereador> {
@@ -27,14 +36,21 @@ class VereadorService(
         val xmlResponse = makePostRequest(url, ano, mes)
         val responseObj = parseXmlResponse(xmlResponse)
 
-        val distinctVereadores = responseObj.items.distinctBy { it.vereador }
+        val distinctVereadores = responseObj.items.distinctBy { it.idVereador }
         return distinctVereadores.map {
-            vereadorRepository.save(
-                Vereador(
-                    id = it.idVereador,
-                    name = it.vereador
+            vereadorRepository.findById(it.idVereador).orElse(
+                vereadorRepository.save(
+                    Vereador(
+                        id = it.idVereador,
+                        name = it.vereadorName
+                    )
                 )
             )
         }
+    }
+
+    @Transactional
+    fun createVereador(vereador: Vereador): Vereador {
+        return vereadorRepository.save(vereador)
     }
 }

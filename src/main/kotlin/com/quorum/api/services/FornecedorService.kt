@@ -13,11 +13,16 @@ class FornecedorService(
     private val fornecedorRepository: FornecedorRepository
 ) {
 
+    @Transactional
+    fun deleteAllFornecedores() {
+        fornecedorRepository.deleteAll()
+    }
+
     fun getAllFornecedores(): List<Fornecedor> {
         return fornecedorRepository.findAll().toList()
     }
 
-    fun getFornecedorByCNPJ(id: String): Fornecedor? {
+    fun getFornecedorByCnpj(id: String): Fornecedor? {
         return fornecedorRepository.findById(id).orElse(null)
     }
 
@@ -29,12 +34,19 @@ class FornecedorService(
 
         val distinctFornecedores = responseObj.items.distinctBy { it.fornecedor }
         return distinctFornecedores.map {
-            fornecedorRepository.save(
+            val formattedCnpj = it.cnpj.replace(".", "").replace("/", "").replace("-", "")
+            fornecedorRepository.findByCnpj(formattedCnpj)
+                ?: fornecedorRepository.save(
                 Fornecedor(
-                    cnpj = it.cnpj.replace(".", "").replace("/", "").replace("-", ""),
+                    cnpj = formattedCnpj,
                     name = it.fornecedor
                 )
             )
         }
+    }
+
+    @Transactional
+    fun createFornecedor(fornecedor: Fornecedor): Fornecedor {
+        return fornecedorRepository.save(fornecedor)
     }
 }

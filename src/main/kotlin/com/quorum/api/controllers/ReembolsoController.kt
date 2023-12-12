@@ -18,18 +18,18 @@ class ReembolsoController(
         return reembolsoService.getAllReembolsos()
     }
 
-    @GetMapping("{idVereador}")
+    @GetMapping("vereador/{idVereador}")
     fun getReembolsosByVereadorId(
         @PathVariable idVereador: String
     ): List<ItemReembolso> {
         return reembolsoService.getReembolsosByIdVereador(idVereador)
     }
 
-    @GetMapping("despesa/{despesa}")
-    fun getReembolsosByDespesa(
-        @PathVariable despesa: String
+    @GetMapping("despesa/{id}")
+    fun getReembolsosByDespesaId(
+        @PathVariable id: String
     ): List<ItemReembolso> {
-        return reembolsoService.getReembolsosByDespesa(despesa)
+        return reembolsoService.getReembolsosByDespesaId(id)
     }
 
     @GetMapping("fornecedor/{cnpj}")

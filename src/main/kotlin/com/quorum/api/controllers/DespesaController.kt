@@ -21,6 +21,6 @@ class DespesaController(
     fun getVereadorById(
         @PathVariable name: String
     ): Despesa {
-        return despesaService.getDespesaByName(name) ?: throw Exception("Despesa não encontrado")
+        return despesaService.getDespesaById(name) ?: throw Exception("Despesa não encontrado")
     }
 }

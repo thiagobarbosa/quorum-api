@@ -13,29 +13,38 @@ class DespesaService(
     private val despesaRepository: DespesaRepository
 ) {
 
+    @Transactional
+    fun deleteAllDespesas() {
+        despesaRepository.deleteAll()
+    }
+
     fun getAllDespesas(): List<Despesa> {
         return despesaRepository.findAll().toList()
     }
 
+    fun getDespesaById(id: String): Despesa? {
+        return despesaRepository.findById(id).orElse(null)
+    }
+
     fun getDespesaByName(name: String): Despesa? {
-        return despesaRepository.findById(name).orElse(null)
+        return despesaRepository.findByName(name)
     }
 
     @Transactional
     fun updateDespesas(ano: String, mes: String): List<Despesa> {
-        // Since the source API doesn't have a unique identifier for each item, we need to delete all
-        despesaRepository.deleteAll()
         val url = obterDebitoVereador
         val xmlResponse = makePostRequest(url, ano, mes)
         val responseObj = parseXmlResponse(xmlResponse)
 
-        val distinctDespesas = responseObj.items.distinctBy { it.despesa }
+        val distinctDespesas = responseObj.items.distinctBy { it.despesaName }
         return distinctDespesas.map {
-            despesaRepository.save(
-                Despesa(
-                    name = it.despesa
-                )
-            )
+            despesaRepository.findByName(it.despesaName)
+                ?: despesaRepository.save(Despesa(name = it.despesaName))
         }
+    }
+
+    @Transactional
+    fun createDespesa(despesa: Despesa): Despesa {
+        return despesaRepository.save(despesa)
     }
 }
