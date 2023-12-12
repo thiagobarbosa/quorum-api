@@ -2,6 +2,9 @@ package com.quorum.api.models
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty
+import org.springframework.data.annotation.Id
+import org.springframework.data.redis.core.RedisHash
+import java.util.*
 
 data class ItemsReembolso(
     @JacksonXmlElementWrapper(useWrapping = false)
@@ -9,27 +12,30 @@ data class ItemsReembolso(
     val items: List<ItemReembolso>
 )
 
+@RedisHash("ItemReembolso")
 data class ItemReembolso(
+    @Id
+    val id: String = UUID.randomUUID().toString(),
     @JacksonXmlProperty(localName = "Chave")
-    val chave: String = "",
+    val idVereador: String,
     @JacksonXmlProperty(localName = "CENTROCUSTOSID")
-    val centroCustosId: Double = 0.0,
+    val centroCustosId: Double,
     @JacksonXmlProperty(localName = "DEPARTAMENTO")
-    val departamento: String = "",
+    val departamento: String,
     @JacksonXmlProperty(localName = "TIPODEPARTAMENTO")
-    val tipoDepartamento: Int = 0,
+    val tipoDepartamento: Int,
     @JacksonXmlProperty(localName = "VEREADOR")
-    val vereador: String = "",
+    val vereador: String,
     @JacksonXmlProperty(localName = "ANO")
-    val ano: Int = 0,
+    val ano: Int,
     @JacksonXmlProperty(localName = "MES")
-    val mes: Int = 0,
+    val mes: Int,
     @JacksonXmlProperty(localName = "DESPESA")
-    val despesa: String = "",
+    val despesa: String,
     @JacksonXmlProperty(localName = "CNPJ")
-    val cnpj: String = "",
+    val cnpj: String,
     @JacksonXmlProperty(localName = "FORNECEDOR")
-    val fornecedor: String = "",
+    val fornecedor: String,
     @JacksonXmlProperty(localName = "VALOR")
-    val valor: Double = 0.0
+    val valor: Double
 )

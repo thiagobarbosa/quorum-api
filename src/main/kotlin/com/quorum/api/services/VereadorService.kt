@@ -31,7 +31,7 @@ class VereadorService(
         return distinctVereadores.map {
             vereadorRepository.save(
                 Vereador(
-                    id = it.chave,
+                    id = it.idVereador,
                     name = it.vereador
                 )
             )
