@@ -4,13 +4,18 @@ import com.quorum.api.connectivity.makePostRequest
 import com.quorum.api.connectivity.obterDebitoVereador
 import com.quorum.api.fornecedores.modelos.Fornecedor
 import com.quorum.api.fornecedores.repositories.RepositorioFornecedor
+import com.quorum.api.redisflag.ChaveAtualizacao
+import com.quorum.api.redisflag.RedisCacheFlag
+import com.quorum.api.redisflag.RepositorioRedisCacheFlag
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import parseXmlResponse
+import java.time.ZonedDateTime
 
 @Service
 class ServicoFornecedor(
-    private val repositorioFornecedor: RepositorioFornecedor
+    private val repositorioFornecedor: RepositorioFornecedor,
+    private val repositorioRedisCacheFlag: RepositorioRedisCacheFlag
 ) {
 
     @Transactional
@@ -35,7 +40,7 @@ class ServicoFornecedor(
         val responseObj = parseXmlResponse(xmlResponse)
 
         val fornecedoresDistintos = responseObj.items.distinctBy { it.fornecedor }
-        return fornecedoresDistintos.map {
+        val fornecedores = fornecedoresDistintos.map {
             val cnpjFormatado = it.cnpj.replace(".", "").replace("/", "").replace("-", "")
             repositorioFornecedor.findByCnpj(cnpjFormatado)
                 ?: repositorioFornecedor.save(
@@ -45,6 +50,15 @@ class ServicoFornecedor(
                     )
                 )
         }
+
+        repositorioRedisCacheFlag.save(
+            RedisCacheFlag(
+                id = ChaveAtualizacao.ULTIMA_ATUALIZACAO_FORNECEDORES.name,
+                valor = ZonedDateTime.now()
+            )
+        )
+
+        return fornecedores
     }
 
     @Transactional
