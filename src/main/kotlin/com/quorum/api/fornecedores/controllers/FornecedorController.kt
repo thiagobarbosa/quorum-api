@@ -10,7 +10,7 @@ import javax.annotation.security.RolesAllowed
 
 @RolesAllowed("ROLE_ADMIN", "ROLE_USER", "ROLE_PUBLIC")
 @RestController
-@RequestMapping("/v1/fornecedores/")
+@RequestMapping("/v1/fornecedores")
 class FornecedorController(
     private val servicoFornecedor: ServicoFornecedor
 ) {
@@ -19,7 +19,7 @@ class FornecedorController(
         return servicoFornecedor.obterTodosFornecedores()
     }
 
-    @GetMapping("{cnpj}")
+    @GetMapping("/{cnpj}")
     fun obterFornecedorPorCnpj(
         @PathVariable cnpj: String
     ): Fornecedor {

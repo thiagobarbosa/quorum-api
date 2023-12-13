@@ -10,7 +10,7 @@ import javax.annotation.security.RolesAllowed
 
 @RolesAllowed("ROLE_ADMIN", "ROLE_USER", "ROLE_PUBLIC")
 @RestController
-@RequestMapping("/v1/reembolsos/")
+@RequestMapping("/v1/reembolsos")
 class ReembolsoController(
     private val servicoReembolso: ServicoReembolso
 ) {
@@ -20,21 +20,21 @@ class ReembolsoController(
         return servicoReembolso.obterTodosReembolsos()
     }
 
-    @GetMapping("vereador/{idVereador}")
-    fun getReembolsosByVereadorId(
+    @GetMapping("/vereador/{idVereador}")
+    fun obterReembolsoPorIdVereador(
         @PathVariable idVereador: String
     ): List<ItemReembolso> {
         return servicoReembolso.obterReembolsoPorIdVereador(idVereador)
     }
 
-    @GetMapping("despesa/{id}")
-    fun getReembolsosByDespesaId(
+    @GetMapping("/despesa/{id}")
+    fun obterReembolsoPorIdDespesa(
         @PathVariable id: String
     ): List<ItemReembolso> {
         return servicoReembolso.obterReembolsoPorIdDespesa(id)
     }
 
-    @GetMapping("fornecedor/{cnpj}")
+    @GetMapping("/fornecedor/{cnpj}")
     fun getReembolsosByFornecedor(
         @PathVariable cnpj: String
     ): List<ItemReembolso> {

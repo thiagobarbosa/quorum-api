@@ -10,7 +10,7 @@ import javax.annotation.security.RolesAllowed
 
 @RolesAllowed("ROLE_ADMIN", "ROLE_USER", "ROLE_PUBLIC")
 @RestController
-@RequestMapping("/v1/vereadores/")
+@RequestMapping("/v1/vereadores")
 class VereadorController(
     private val servicoVereador: ServicoVereador
 ) {

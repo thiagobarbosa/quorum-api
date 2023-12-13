@@ -10,7 +10,7 @@ import javax.annotation.security.RolesAllowed
 
 @RolesAllowed("ROLE_ADMIN", "ROLE_USER", "ROLE_PUBLIC")
 @RestController
-@RequestMapping("/v1/despesas/")
+@RequestMapping("/v1/despesas")
 class DespesaController(
     private val despesaService: DespesaService
 ) {
@@ -19,10 +19,10 @@ class DespesaController(
         return despesaService.obterTodasDespesas()
     }
 
-    @GetMapping("{name}")
+    @GetMapping("/{id}")
     fun getVereadorById(
-        @PathVariable name: String
+        @PathVariable id: String
     ): Despesa {
-        return despesaService.obterDespesaPorId(name) ?: throw Exception("Despesa não encontrado")
+        return despesaService.obterDespesaPorId(id) ?: throw Exception("Despesa não encontrado")
     }
 }
