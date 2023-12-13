@@ -1,6 +1,5 @@
 package com.quorum.api.reembolsos.controllers
 
-import com.quorum.api.authentication.servicos.ServicoAutenticacao
 import com.quorum.api.reembolsos.modelos.ItemReembolso
 import com.quorum.api.reembolsos.servicos.ServicoReembolso
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -14,8 +13,7 @@ import javax.annotation.security.RolesAllowed
 @RestController
 @RequestMapping("/v1/admin/reembolsos")
 class ReembolsoControllerAdmin(
-    private val servicoReembolso: ServicoReembolso,
-    private val servicoAutenticacao: ServicoAutenticacao
+    private val servicoReembolso: ServicoReembolso
 ) {
 
     @PutMapping("/atualizar")
