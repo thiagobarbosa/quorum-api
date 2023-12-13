@@ -18,7 +18,13 @@ class RedisConfig {
             "localhost"
         }
 
-        val redisStandaloneConfiguration = RedisStandaloneConfiguration(redisHost, 6379)
+        val redisPort = try {
+            SecretManagerAccessor.getSecret("redisPort").toInt()
+        } catch (e: Exception) {
+            6380
+        }
+
+        val redisStandaloneConfiguration = RedisStandaloneConfiguration(redisHost, redisPort)
         val jedisConnectionFactory = JedisConnectionFactory(redisStandaloneConfiguration)
         jedisConnectionFactory.afterPropertiesSet()
         return jedisConnectionFactory
