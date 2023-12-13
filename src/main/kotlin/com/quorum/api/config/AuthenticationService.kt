@@ -27,7 +27,7 @@ class AuthenticationService(
     }
 
     @Transactional
-    fun generateUserToken(email: String): String {
+    fun generateUserToken(email: String): Authentication {
         if (email.isBlank()) throw Exception("Email cannot be blank")
 
         val existingToken = authenticationRepository.findByEmail(email)
@@ -39,15 +39,13 @@ class AuthenticationService(
         }
 
         val token = UUID.randomUUID().toString()
-        authenticationRepository.save(Authentication(token = token, expirationDate = ZonedDateTime.now().plusDays(365), role = "USER", email = email))
-        return token
+        return authenticationRepository.save(Authentication(token = token, expirationDate = ZonedDateTime.now().plusDays(365), role = "USER", email = email))
     }
 
     @Transactional
-    fun generatePublicToken(): String {
+    fun generatePublicToken(): Authentication {
         val token = UUID.randomUUID().toString()
-        authenticationRepository.save(Authentication(token = token, expirationDate = ZonedDateTime.now().plusDays(7), role = "PUBLIC"))
-        return token
+        return authenticationRepository.save(Authentication(token = token, expirationDate = ZonedDateTime.now().plusDays(7), role = "PUBLIC"))
     }
 
     fun getAuthenticationByToken(token: String): Authentication {
