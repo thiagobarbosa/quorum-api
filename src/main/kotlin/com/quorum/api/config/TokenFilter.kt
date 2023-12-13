@@ -1,7 +1,8 @@
 package com.quorum.api.config
 
 import com.github.benmanes.caffeine.cache.LoadingCache
-import com.quorum.api.authentication.models.getRequestLimit
+import com.quorum.api.authentication.models.obterLimiteRequisicao
+import com.quorum.api.authentication.servicos.ServicoAutenticacao
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Component
 import org.springframework.web.filter.GenericFilterBean
@@ -13,7 +14,7 @@ import javax.servlet.http.HttpServletResponse
 
 @Component
 class TokenFilter(
-    private val authenticationService: AuthenticationService,
+    private val servicoAutenticacao: ServicoAutenticacao,
     private val requestLimitCache: LoadingCache<String, Int>
 ) : GenericFilterBean() {
 
@@ -29,7 +30,7 @@ class TokenFilter(
 
         if (headerToken != null) {
             val auth = try {
-                authenticationService.getAuthenticationByToken(headerToken)
+                servicoAutenticacao.obterAutenticacaoPorToken(headerToken)
             } catch (e: Exception) {
                 httpResponse.sendResponse(HttpServletResponse.SC_UNAUTHORIZED, e.message)
                 return
@@ -37,7 +38,7 @@ class TokenFilter(
 
             val requests = requestLimitCache.get(auth.token) ?: 0
 
-            if (requests >= auth.getRequestLimit()) {
+            if (requests >= auth.obterLimiteRequisicao()) {
                 httpResponse.sendResponse(HttpStatus.TOO_MANY_REQUESTS.value(), "Too many requests. Please wait a minute a try again.")
                 return
             }

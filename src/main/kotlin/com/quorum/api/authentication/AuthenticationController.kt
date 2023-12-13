@@ -1,7 +1,7 @@
 package com.quorum.api.authentication
 
-import com.quorum.api.authentication.models.Authentication
-import com.quorum.api.config.AuthenticationService
+import com.quorum.api.authentication.models.Autenticacao
+import com.quorum.api.authentication.servicos.ServicoAutenticacao
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
@@ -12,17 +12,17 @@ import javax.annotation.security.RolesAllowed
 @RestController
 @RequestMapping("/auth")
 class AuthenticationController(
-    private val authenticationService: AuthenticationService
+    private val servicoAutenticacao: ServicoAutenticacao
 ) {
     @PostMapping("/token/generate")
     fun generateUserToken(
         @RequestParam email: String
-    ): Authentication {
-        return authenticationService.generateUserToken(email)
+    ): Autenticacao {
+        return servicoAutenticacao.criarTokenPrivado(email)
     }
 
     @PostMapping("/public-token/generate")
-    fun generatePublicToken(): Authentication {
-        return authenticationService.generatePublicToken()
+    fun generatePublicToken(): Autenticacao {
+        return servicoAutenticacao.criarTokenPublico()
     }
 }

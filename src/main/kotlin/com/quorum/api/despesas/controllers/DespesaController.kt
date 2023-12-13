@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import javax.annotation.security.RolesAllowed
 
-@RolesAllowed("ROLE_USER", "ROLE_PUBLIC")
+@RolesAllowed("ROLE_ADMIN", "ROLE_USER", "ROLE_PUBLIC")
 @RestController
 @RequestMapping("/v1/despesas/")
 class DespesaController(
@@ -16,13 +16,13 @@ class DespesaController(
 ) {
     @GetMapping
     fun getAllDespesas(): List<Despesa> {
-        return despesaService.getAllDespesas()
+        return despesaService.obterTodasDespesas()
     }
 
     @GetMapping("{name}")
     fun getVereadorById(
         @PathVariable name: String
     ): Despesa {
-        return despesaService.getDespesaById(name) ?: throw Exception("Despesa não encontrado")
+        return despesaService.obterDespesaPorId(name) ?: throw Exception("Despesa não encontrado")
     }
 }

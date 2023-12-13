@@ -7,5 +7,5 @@ import org.springframework.data.redis.core.RedisHash
 data class Fornecedor(
     @Id
     val cnpj: String,
-    val name: String
+    val nome: String
 )

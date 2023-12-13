@@ -9,5 +9,5 @@ data class Vereador(
     @Id
     val id: String,
     @Indexed
-    val name: String
+    val nome: String
 )

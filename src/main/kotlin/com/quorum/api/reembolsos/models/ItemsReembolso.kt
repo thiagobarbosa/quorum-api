@@ -21,9 +21,9 @@ data class ItemReembolso(
     @Indexed
     val idVereador: String,
     @JacksonXmlProperty(localName = "VEREADOR")
-    val vereadorName: String,
+    val nomeVereador: String,
     @JacksonXmlProperty(localName = "CENTROCUSTOSID")
-    val centroCustosId: Double,
+    val idCentroCusto: Double,
     @JacksonXmlProperty(localName = "DEPARTAMENTO")
     val departamento: String,
     @JacksonXmlProperty(localName = "TIPODEPARTAMENTO")
@@ -33,9 +33,9 @@ data class ItemReembolso(
     @JacksonXmlProperty(localName = "MES")
     val mes: Int,
     @JacksonXmlProperty(localName = "DESPESA")
-    val despesaName: String,
+    val nomeDespesa: String,
     @Indexed
-    val despesaId: String? = null,
+    val idDespesa: String? = null,
     @JacksonXmlProperty(localName = "CNPJ")
     @Indexed
     val cnpj: String,

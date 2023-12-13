@@ -1,15 +1,15 @@
 package com.quorum.api.admin
 
-import com.quorum.api.authentication.models.Authentication
-import com.quorum.api.config.AuthenticationService
+import com.quorum.api.authentication.models.Autenticacao
+import com.quorum.api.authentication.servicos.ServicoAutenticacao
 import com.quorum.api.despesas.models.Despesa
 import com.quorum.api.despesas.services.DespesaService
 import com.quorum.api.fornecedores.models.Fornecedor
-import com.quorum.api.fornecedores.services.FornecedorService
+import com.quorum.api.fornecedores.services.ServicoFornecedor
 import com.quorum.api.reembolsos.models.ItemReembolso
-import com.quorum.api.reembolsos.services.ReembolsoService
+import com.quorum.api.reembolsos.services.ServicoReembolso
 import com.quorum.api.vereadores.models.Vereador
-import com.quorum.api.vereadores.services.VereadorService
+import com.quorum.api.vereadores.services.ServicoVereador
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -23,84 +23,84 @@ import javax.annotation.security.RolesAllowed
 @RestController
 @RequestMapping("/v1/admin")
 class AdminController(
-    private val vereadorService: VereadorService,
-    private val fornecedorService: FornecedorService,
+    private val servicoVereador: ServicoVereador,
+    private val servicoFornecedor: ServicoFornecedor,
     private val despesaService: DespesaService,
-    private val reembolsoService: ReembolsoService,
-    private val authenticationService: AuthenticationService
+    private val servicoReembolso: ServicoReembolso,
+    private val servicoAutenticacao: ServicoAutenticacao
 ) {
 
     @GetMapping("/auth")
-    fun getAllAuthentications(): List<Authentication> {
-        return authenticationService.getAllAuthentications()
+    fun obterTodasAutenticacoes(): List<Autenticacao> {
+        return servicoAutenticacao.obterTodasAutenticacoes()
     }
 
     @PutMapping("/auth/generate")
-    fun generateAdminToken(): Authentication {
-        return authenticationService.generateAdminToken()
+    fun criarTokenAdmin(): Autenticacao {
+        return servicoAutenticacao.criarTokenAdmin()
     }
 
     @DeleteMapping("/auth/delete/all")
-    fun deleteAllAdminTokens(): List<Authentication> {
-        return authenticationService.deleteAllAdminTokens()
+    fun apagarTodasAutenticacoesAdmin(): List<Autenticacao> {
+        return servicoAutenticacao.apagarTodasAutenticacoesAdmin()
     }
 
     @DeleteMapping("/auth/token/delete/{token}")
-    fun deleteToken(
+    fun apagarToken(
         @PathVariable token: String
-    ): Authentication {
-        return authenticationService.deleteToken(token)
+    ): Autenticacao {
+        return servicoAutenticacao.apagarToken(token)
     }
 
     @PutMapping("/vereadores/update")
-    fun updateVereadores(
+    fun atualizarVereadores(
         @RequestParam ano: String,
         @RequestParam mes: String
     ): List<Vereador> {
-        return vereadorService.updateVereadores(ano, mes)
+        return servicoVereador.atualizarVereadores(ano, mes)
     }
 
     @DeleteMapping("/vereadores/delete")
-    fun deleteAllVereadores() {
-        vereadorService.deleteAllVereadores()
+    fun apagarTodosVereadores() {
+        servicoVereador.apagarTodosVereadores()
     }
 
     @PutMapping("/fornecedores/update")
-    fun updateFornecedores(
+    fun atualizarFornecedores(
         @RequestParam ano: String,
         @RequestParam mes: String
     ): List<Fornecedor> {
-        return fornecedorService.updateFornecedores(ano, mes)
+        return servicoFornecedor.atualizarFornecedores(ano, mes)
     }
 
     @DeleteMapping("/fornecedores/delete")
-    fun deleteAllFornecedores() {
-        fornecedorService.deleteAllFornecedores()
+    fun apagarTodosFornecedores() {
+        servicoFornecedor.apagarTodosFornecedores()
     }
 
     @PutMapping("/despesas/update")
-    fun updateDespesas(
+    fun atualizarDespesas(
         @RequestParam ano: String,
         @RequestParam mes: String
     ): List<Despesa> {
-        return despesaService.updateDespesas(ano, mes)
+        return despesaService.atualizarDespesas(ano, mes)
     }
 
     @DeleteMapping("/despesas/delete")
-    fun deleteAllDespesas() {
-        despesaService.deleteAllDespesas()
+    fun apagarTodasDespesas(): List<Despesa> {
+        return despesaService.apagarTodasDespesas()
     }
 
     @PutMapping("/reembolsos/update")
-    fun updateReembolsos(
+    fun atualizarReembolsos(
         @RequestParam ano: String,
         @RequestParam mes: String
     ): List<ItemReembolso> {
-        return reembolsoService.updateReembolsos(ano, mes)
+        return servicoReembolso.atualizarReembolsos(ano, mes)
     }
 
     @DeleteMapping("/reembolsos/delete")
-    fun deleteAllReembolsos() {
-        reembolsoService.deleteAllReembolsos()
+    fun apagarTodosReembolsos(): List<ItemReembolso> {
+        return servicoReembolso.apagarTodosReembolsos()
     }
 }

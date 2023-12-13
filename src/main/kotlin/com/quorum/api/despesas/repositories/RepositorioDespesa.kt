@@ -5,6 +5,6 @@ import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface DespesaRepository : CrudRepository<Despesa, String> {
-    fun findByCategoryName(name: String): Despesa?
+interface RepositorioDespesa : CrudRepository<Despesa, String> {
+    fun findByNomeCategoria(nome: String): Despesa?
 }

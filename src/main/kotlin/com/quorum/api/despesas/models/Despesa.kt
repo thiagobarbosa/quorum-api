@@ -10,5 +10,5 @@ data class Despesa(
     @Id
     val id: String = UUID.randomUUID().toString(),
     @Indexed
-    val categoryName: String
+    val nomeCategoria: String
 )

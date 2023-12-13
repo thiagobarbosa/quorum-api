@@ -5,6 +5,6 @@ import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface FornecedorRepository : CrudRepository<Fornecedor, String> {
+interface RepositorioFornecedor : CrudRepository<Fornecedor, String> {
     fun findByCnpj(cnpj: String): Fornecedor?
 }
