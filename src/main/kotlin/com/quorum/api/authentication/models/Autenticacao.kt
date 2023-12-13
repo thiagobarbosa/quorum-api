@@ -5,7 +5,7 @@ import org.springframework.data.redis.core.RedisHash
 import org.springframework.data.redis.core.index.Indexed
 import java.time.ZonedDateTime
 
-@RedisHash("Authentication")
+@RedisHash("Autenticacao")
 class Autenticacao(
     @Id
     val token: String,
