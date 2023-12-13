@@ -1,4 +1,4 @@
-package com.quorum.api.admin
+package com.quorum.api.reembolsos.controllers
 
 import com.quorum.api.authentication.servicos.ServicoAutenticacao
 import com.quorum.api.reembolsos.models.ItemReembolso

@@ -1,4 +1,4 @@
-package com.quorum.api.authentication
+package com.quorum.api.authentication.controllers
 
 import com.quorum.api.authentication.models.Autenticacao
 import com.quorum.api.authentication.servicos.ServicoAutenticacao

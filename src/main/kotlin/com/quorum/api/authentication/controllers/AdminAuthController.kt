@@ -1,4 +1,4 @@
-package com.quorum.api.admin
+package com.quorum.api.authentication.controllers
 
 import com.quorum.api.authentication.models.Autenticacao
 import com.quorum.api.authentication.servicos.ServicoAutenticacao
@@ -14,7 +14,7 @@ import javax.annotation.security.RolesAllowed
 @RolesAllowed("ROLE_ADMIN")
 @RestController
 @RequestMapping("/v1/admin")
-class AdminController(
+class AdminAuthController(
     private val servicoReembolso: ServicoReembolso,
     private val servicoAutenticacao: ServicoAutenticacao
 ) {

@@ -1,7 +1,7 @@
-package com.quorum.api.admin
+package com.quorum.api.despesas.controllers
 
-import com.quorum.api.vereadores.models.Vereador
-import com.quorum.api.vereadores.services.ServicoVereador
+import com.quorum.api.despesas.models.Despesa
+import com.quorum.api.despesas.services.DespesaService
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestMapping
@@ -11,21 +11,21 @@ import javax.annotation.security.RolesAllowed
 
 @RolesAllowed("ROLE_ADMIN")
 @RestController
-@RequestMapping("/v1/admin/vereadores")
-class AdminVereadoresController(
-    private val servicoVereador: ServicoVereador
+@RequestMapping("/v1/admin/despesas")
+class AdminDespesaController(
+    private val despesaService: DespesaService
 ) {
 
     @PutMapping("/atualizar")
-    fun atualizarVereadores(
+    fun atualizarDespesas(
         @RequestParam ano: String,
         @RequestParam mes: String
-    ): List<Vereador> {
-        return servicoVereador.atualizarVereadores(ano, mes)
+    ): List<Despesa> {
+        return despesaService.atualizarDespesas(ano, mes)
     }
 
-    @DeleteMapping("/apagar/todos")
-    fun apagarTodosVereadores(): List<Vereador> {
-        return servicoVereador.apagarTodosVereadores()
+    @DeleteMapping("/apagar/todas")
+    fun apagarTodasDespesas(): List<Despesa> {
+        return despesaService.apagarTodasDespesas()
     }
 }
