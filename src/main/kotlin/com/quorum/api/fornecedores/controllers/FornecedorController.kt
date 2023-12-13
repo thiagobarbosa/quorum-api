@@ -4,7 +4,6 @@ import com.quorum.api.fornecedores.models.Fornecedor
 import com.quorum.api.fornecedores.services.ServicoFornecedor
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import javax.annotation.security.RolesAllowed
@@ -21,14 +20,9 @@ class FornecedorController(
     }
 
     @GetMapping("{cnpj}")
-    fun getVereadorById(
+    fun obterFornecedorPorCnpj(
         @PathVariable cnpj: String
     ): Fornecedor {
-        return servicoFornecedor.obterFornecedorPorId(cnpj) ?: throw Exception("Fornecedor não encontrado")
-    }
-
-    @PutMapping("delete")
-    fun deleteAllFornecedores() {
-        servicoFornecedor.apagarTodosFornecedores()
+        return servicoFornecedor.obterFornecedorPorCnpj(cnpj) ?: throw Exception("Fornecedor não encontrado")
     }
 }

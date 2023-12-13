@@ -14,8 +14,10 @@ class ServicoVereador(
 ) {
 
     @Transactional
-    fun apagarTodosVereadores() {
-        repositorioVereador.deleteAll()
+    fun apagarTodosVereadores(): List<Vereador> {
+        val vereadores = repositorioVereador.findAll().toList()
+        repositorioVereador.deleteAll(vereadores)
+        return vereadores
     }
 
     fun obterVereadorPorId(id: String): Vereador? {

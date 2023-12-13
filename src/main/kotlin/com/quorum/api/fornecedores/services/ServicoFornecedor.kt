@@ -14,15 +14,17 @@ class ServicoFornecedor(
 ) {
 
     @Transactional
-    fun apagarTodosFornecedores() {
-        repositorioFornecedor.deleteAll()
+    fun apagarTodosFornecedores(): List<Fornecedor> {
+        val fornecedores = repositorioFornecedor.findAll().toList()
+        repositorioFornecedor.deleteAll(fornecedores)
+        return fornecedores
     }
 
     fun obterTodosFornecedores(): List<Fornecedor> {
         return repositorioFornecedor.findAll().toList()
     }
 
-    fun obterFornecedorPorId(id: String): Fornecedor? {
+    fun obterFornecedorPorCnpj(id: String): Fornecedor? {
         return repositorioFornecedor.findById(id).orElse(null)
     }
 
