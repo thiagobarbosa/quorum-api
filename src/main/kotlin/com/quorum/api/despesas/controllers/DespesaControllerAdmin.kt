@@ -18,10 +18,9 @@ class DespesaControllerAdmin(
 
     @PutMapping("/atualizar")
     fun atualizarDespesas(
-        @RequestParam ano: Int,
-        @RequestParam mes: Int
+        @RequestParam ano: Int
     ): List<Despesa> {
-        return despesaService.atualizarDespesas(ano, mes)
+        return despesaService.atualizarDespesas(ano)
     }
 
     @DeleteMapping("/apagar/todas")

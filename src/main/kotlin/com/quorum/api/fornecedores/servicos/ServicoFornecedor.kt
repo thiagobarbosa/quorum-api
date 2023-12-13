@@ -7,6 +7,9 @@ import com.quorum.api.fornecedores.repositories.RepositorioFornecedor
 import com.quorum.api.redisflag.ChaveAtualizacao
 import com.quorum.api.redisflag.RedisCacheFlag
 import com.quorum.api.redisflag.RepositorioRedisCacheFlag
+import com.quorum.api.utils.ANO_ATUAL
+import com.quorum.api.utils.ANO_INICIO
+import com.quorum.api.utils.MES_ATUAL
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import parseXmlResponse
@@ -34,21 +37,33 @@ class ServicoFornecedor(
     }
 
     @Transactional
-    fun atualizarFornecedores(ano: Int, mes: Int): List<Fornecedor> {
-        val url = obterDebitoVereador
-        val xmlResponse = makePostRequest(url, ano, mes)
-        val responseObj = parseXmlResponse(xmlResponse)
+    fun atualizarFornecedores(ano: Int): List<Fornecedor> {
+        if (ano > ANO_ATUAL || ano < ANO_INICIO) {
+            throw Exception("Dados disponiveis somente a partir de $ANO_INICIO até $ANO_ATUAL")
+        }
 
-        val fornecedoresDistintos = responseObj.items.distinctBy { it.fornecedor }
-        val fornecedores = fornecedoresDistintos.map {
-            val cnpjFormatado = it.cnpj.replace(".", "").replace("/", "").replace("-", "")
-            repositorioFornecedor.findByCnpj(cnpjFormatado)
-                ?: repositorioFornecedor.save(
-                    Fornecedor(
-                        cnpj = cnpjFormatado,
-                        nome = it.fornecedor
-                    )
-                )
+        val ultimoMes = if (ano == ANO_ATUAL) MES_ATUAL else 12
+        val fornecedoresAdicionados: MutableList<Fornecedor> = mutableListOf()
+
+        val url = obterDebitoVereador
+
+        (1..ultimoMes).forEach { mes ->
+            val xmlResponse = makePostRequest(url, ano, mes)
+            val responseObj = parseXmlResponse(xmlResponse)
+
+            val fornecedoresDistintos = responseObj.items.distinctBy { it.fornecedor }
+            fornecedoresAdicionados.addAll(
+                fornecedoresDistintos.map {
+                    val cnpjFormatado = it.cnpj.replace(".", "").replace("/", "").replace("-", "")
+                    repositorioFornecedor.findByCnpj(cnpjFormatado)
+                        ?: repositorioFornecedor.save(
+                            Fornecedor(
+                                cnpj = cnpjFormatado,
+                                nome = it.fornecedor
+                            )
+                        )
+                }
+            )
         }
 
         repositorioRedisCacheFlag.save(
@@ -58,7 +73,7 @@ class ServicoFornecedor(
             )
         )
 
-        return fornecedores
+        return fornecedoresAdicionados
     }
 
     @Transactional

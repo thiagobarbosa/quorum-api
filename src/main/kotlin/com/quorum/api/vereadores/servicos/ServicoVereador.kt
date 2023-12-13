@@ -5,6 +5,9 @@ import com.quorum.api.connectivity.obterDebitoVereador
 import com.quorum.api.redisflag.ChaveAtualizacao
 import com.quorum.api.redisflag.RedisCacheFlag
 import com.quorum.api.redisflag.RepositorioRedisCacheFlag
+import com.quorum.api.utils.ANO_ATUAL
+import com.quorum.api.utils.ANO_INICIO
+import com.quorum.api.utils.MES_ATUAL
 import com.quorum.api.vereadores.modelos.Vereador
 import com.quorum.api.vereadores.repositorios.RepositorioVereador
 import org.springframework.stereotype.Service
@@ -38,20 +41,32 @@ class ServicoVereador(
     }
 
     @Transactional
-    fun atualizarVereadores(ano: Int, mes: Int): List<Vereador> {
-        val url = obterDebitoVereador
-        val xmlResponse = makePostRequest(url, ano, mes)
-        val responseObj = parseXmlResponse(xmlResponse)
+    fun atualizarVereadores(ano: Int): List<Vereador> {
+        if (ano > ANO_ATUAL || ano < ANO_INICIO) {
+            throw Exception("Dados disponiveis somente a partir de $ANO_INICIO até $ANO_ATUAL")
+        }
 
-        val vereadoresDistintos = responseObj.items.distinctBy { it.idVereador }
-        val vereadores = vereadoresDistintos.map {
-            repositorioVereador.findById(it.idVereador).orElse(
-                repositorioVereador.save(
-                    Vereador(
-                        id = it.idVereador,
-                        nome = it.nomeVereador
+        val url = obterDebitoVereador
+
+        val ultimoMes = if (ano == ANO_ATUAL) MES_ATUAL else 12
+        val vereadoresAdicionados: MutableList<Vereador> = mutableListOf()
+
+        (1..ultimoMes).forEach { mes ->
+            val xmlResponse = makePostRequest(url, ano, mes)
+            val responseObj = parseXmlResponse(xmlResponse)
+
+            val vereadoresDistintos = responseObj.items.distinctBy { it.idVereador }
+            vereadoresAdicionados.addAll(
+                vereadoresDistintos.map {
+                    repositorioVereador.findById(it.idVereador).orElse(
+                        repositorioVereador.save(
+                            Vereador(
+                                id = it.idVereador,
+                                nome = it.nomeVereador
+                            )
+                        )
                     )
-                )
+                }
             )
         }
 
@@ -62,7 +77,7 @@ class ServicoVereador(
             )
         )
 
-        return vereadores
+        return vereadoresAdicionados
     }
 
     @Transactional

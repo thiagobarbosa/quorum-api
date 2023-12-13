@@ -7,6 +7,9 @@ import com.quorum.api.despesas.repositories.RepositorioDespesa
 import com.quorum.api.redisflag.ChaveAtualizacao
 import com.quorum.api.redisflag.RedisCacheFlag
 import com.quorum.api.redisflag.RepositorioRedisCacheFlag
+import com.quorum.api.utils.ANO_ATUAL
+import com.quorum.api.utils.ANO_INICIO
+import com.quorum.api.utils.MES_ATUAL
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import parseXmlResponse
@@ -38,15 +41,27 @@ class DespesaService(
     }
 
     @Transactional
-    fun atualizarDespesas(ano: Int, mes: Int): List<Despesa> {
-        val url = obterDebitoVereador
-        val xmlResponse = makePostRequest(url, ano, mes)
-        val responseObj = parseXmlResponse(xmlResponse)
+    fun atualizarDespesas(ano: Int): List<Despesa> {
+        if (ano > ANO_ATUAL || ano < ANO_INICIO) {
+            throw Exception("Dados disponiveis somente a partir de $ANO_INICIO até $ANO_ATUAL")
+        }
 
-        val despesasDistintas = responseObj.items.distinctBy { it.nomeDespesa }
-        val despesas = despesasDistintas.map {
-            repositorioDespesa.findByNomeCategoria(it.nomeDespesa)
-                ?: repositorioDespesa.save(Despesa(nomeCategoria = it.nomeDespesa))
+        val url = obterDebitoVereador
+
+        val ultimoMes = if (ano == ANO_ATUAL) MES_ATUAL else 12
+        val despesasAdicionadas: MutableList<Despesa> = mutableListOf()
+
+        (1..ultimoMes).forEach { mes ->
+            val xmlResponse = makePostRequest(url, ano, mes)
+            val responseObj = parseXmlResponse(xmlResponse)
+
+            val despesasDistintas = responseObj.items.distinctBy { it.nomeDespesa }
+            despesasAdicionadas.addAll(
+                despesasDistintas.map {
+                    repositorioDespesa.findByNomeCategoria(it.nomeDespesa)
+                        ?: repositorioDespesa.save(Despesa(nomeCategoria = it.nomeDespesa))
+                }
+            )
         }
 
         repositorioRedisCacheFlag.save(
@@ -56,7 +71,7 @@ class DespesaService(
             )
         )
 
-        return despesas
+        return despesasAdicionadas
     }
 
     @Transactional

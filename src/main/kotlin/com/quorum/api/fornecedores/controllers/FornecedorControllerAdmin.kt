@@ -18,10 +18,9 @@ class FornecedorControllerAdmin(
 
     @PutMapping("/atualizar")
     fun atualizarFornecedores(
-        @RequestParam ano: Int,
-        @RequestParam mes: Int
+        @RequestParam ano: Int
     ): List<Fornecedor> {
-        return servicoFornecedor.atualizarFornecedores(ano, mes)
+        return servicoFornecedor.atualizarFornecedores(ano)
     }
 
     @DeleteMapping("/apagar/todos")
