@@ -12,7 +12,7 @@ import javax.annotation.security.RolesAllowed
 @RolesAllowed("ROLE_ADMIN")
 @RestController
 @RequestMapping("/v1/admin/despesas")
-class AdminDespesaController(
+class DespesaControllerAdmin(
     private val despesaService: DespesaService
 ) {
 

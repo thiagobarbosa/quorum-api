@@ -13,7 +13,7 @@ import javax.annotation.security.RolesAllowed
 @RolesAllowed("ROLE_ADMIN")
 @RestController
 @RequestMapping("/v1/admin/reembolsos")
-class AdminReembolsoController(
+class ReembolsoControllerAdmin(
     private val servicoReembolso: ServicoReembolso,
     private val servicoAutenticacao: ServicoAutenticacao
 ) {
