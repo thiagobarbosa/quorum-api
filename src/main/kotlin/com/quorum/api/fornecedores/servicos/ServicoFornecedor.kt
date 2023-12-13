@@ -1,8 +1,8 @@
-package com.quorum.api.fornecedores.services
+package com.quorum.api.fornecedores.servicos
 
 import com.quorum.api.connectivity.makePostRequest
 import com.quorum.api.connectivity.obterDebitoVereador
-import com.quorum.api.fornecedores.models.Fornecedor
+import com.quorum.api.fornecedores.modelos.Fornecedor
 import com.quorum.api.fornecedores.repositories.RepositorioFornecedor
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional

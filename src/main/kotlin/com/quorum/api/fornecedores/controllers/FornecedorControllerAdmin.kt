@@ -1,7 +1,7 @@
 package com.quorum.api.fornecedores.controllers
 
-import com.quorum.api.fornecedores.models.Fornecedor
-import com.quorum.api.fornecedores.services.ServicoFornecedor
+import com.quorum.api.fornecedores.modelos.Fornecedor
+import com.quorum.api.fornecedores.servicos.ServicoFornecedor
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestMapping

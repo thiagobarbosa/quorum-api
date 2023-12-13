@@ -1,8 +1,8 @@
-package com.quorum.api.vereadores.services
+package com.quorum.api.vereadores.servicos
 
 import com.quorum.api.connectivity.makePostRequest
 import com.quorum.api.connectivity.obterDebitoVereador
-import com.quorum.api.vereadores.models.Vereador
+import com.quorum.api.vereadores.modelos.Vereador
 import com.quorum.api.vereadores.repositorios.RepositorioVereador
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional

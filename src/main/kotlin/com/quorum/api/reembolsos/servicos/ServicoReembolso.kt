@@ -1,15 +1,15 @@
-package com.quorum.api.reembolsos.services
+package com.quorum.api.reembolsos.servicos
 
 import com.quorum.api.connectivity.makePostRequest
 import com.quorum.api.connectivity.obterDebitoVereador
-import com.quorum.api.despesas.models.Despesa
-import com.quorum.api.despesas.services.DespesaService
-import com.quorum.api.fornecedores.models.Fornecedor
-import com.quorum.api.fornecedores.services.ServicoFornecedor
-import com.quorum.api.reembolsos.models.ItemReembolso
+import com.quorum.api.despesas.modelos.Despesa
+import com.quorum.api.despesas.servicos.DespesaService
+import com.quorum.api.fornecedores.modelos.Fornecedor
+import com.quorum.api.fornecedores.servicos.ServicoFornecedor
+import com.quorum.api.reembolsos.modelos.ItemReembolso
 import com.quorum.api.reembolsos.repositories.RepositorioReembolso
-import com.quorum.api.vereadores.models.Vereador
-import com.quorum.api.vereadores.services.ServicoVereador
+import com.quorum.api.vereadores.modelos.Vereador
+import com.quorum.api.vereadores.servicos.ServicoVereador
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import parseXmlResponse

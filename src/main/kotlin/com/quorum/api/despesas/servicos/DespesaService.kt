@@ -1,8 +1,8 @@
-package com.quorum.api.despesas.services
+package com.quorum.api.despesas.servicos
 
 import com.quorum.api.connectivity.makePostRequest
 import com.quorum.api.connectivity.obterDebitoVereador
-import com.quorum.api.despesas.models.Despesa
+import com.quorum.api.despesas.modelos.Despesa
 import com.quorum.api.despesas.repositories.RepositorioDespesa
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional

@@ -1,7 +1,7 @@
 package com.quorum.api.despesas.controllers
 
-import com.quorum.api.despesas.models.Despesa
-import com.quorum.api.despesas.services.DespesaService
+import com.quorum.api.despesas.modelos.Despesa
+import com.quorum.api.despesas.servicos.DespesaService
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping

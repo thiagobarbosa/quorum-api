@@ -1,8 +1,8 @@
 package com.quorum.api.authentication.controllers
 
-import com.quorum.api.authentication.models.Autenticacao
+import com.quorum.api.authentication.modelos.Autenticacao
 import com.quorum.api.authentication.servicos.ServicoAutenticacao
-import com.quorum.api.reembolsos.services.ServicoReembolso
+import com.quorum.api.reembolsos.servicos.ServicoReembolso
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable

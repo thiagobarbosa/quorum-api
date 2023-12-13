@@ -1,6 +1,6 @@
 package com.quorum.api.authentication.servicos
 
-import com.quorum.api.authentication.models.Autenticacao
+import com.quorum.api.authentication.modelos.Autenticacao
 import com.quorum.api.authentication.repositories.RepositorioAutenticacao
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.authority.SimpleGrantedAuthority

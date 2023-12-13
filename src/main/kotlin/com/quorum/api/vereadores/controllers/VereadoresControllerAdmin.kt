@@ -1,7 +1,7 @@
 package com.quorum.api.vereadores.controllers
 
-import com.quorum.api.vereadores.models.Vereador
-import com.quorum.api.vereadores.services.ServicoVereador
+import com.quorum.api.vereadores.modelos.Vereador
+import com.quorum.api.vereadores.servicos.ServicoVereador
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestMapping

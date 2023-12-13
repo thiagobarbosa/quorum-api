@@ -1,6 +1,6 @@
 package com.quorum.api.authentication.repositories
 
-import com.quorum.api.authentication.models.Autenticacao
+import com.quorum.api.authentication.modelos.Autenticacao
 import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Repository
 

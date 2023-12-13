@@ -1,6 +1,6 @@
 package com.quorum.api.fornecedores.repositories
 
-import com.quorum.api.fornecedores.models.Fornecedor
+import com.quorum.api.fornecedores.modelos.Fornecedor
 import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Repository
 

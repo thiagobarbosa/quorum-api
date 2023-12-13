@@ -1,6 +1,6 @@
 package com.quorum.api.authentication.controllers
 
-import com.quorum.api.authentication.models.Autenticacao
+import com.quorum.api.authentication.modelos.Autenticacao
 import com.quorum.api.authentication.servicos.ServicoAutenticacao
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping

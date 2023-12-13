@@ -1,4 +1,4 @@
-package com.quorum.api.reembolsos.models
+package com.quorum.api.reembolsos.modelos
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty

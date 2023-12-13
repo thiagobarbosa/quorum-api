@@ -1,7 +1,7 @@
 package com.quorum.api.reembolsos.controllers
 
-import com.quorum.api.reembolsos.models.ItemReembolso
-import com.quorum.api.reembolsos.services.ServicoReembolso
+import com.quorum.api.reembolsos.modelos.ItemReembolso
+import com.quorum.api.reembolsos.servicos.ServicoReembolso
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping

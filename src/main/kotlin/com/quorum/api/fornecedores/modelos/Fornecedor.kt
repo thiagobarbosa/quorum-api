@@ -1,4 +1,4 @@
-package com.quorum.api.fornecedores.models
+package com.quorum.api.fornecedores.modelos
 
 import org.springframework.data.annotation.Id
 import org.springframework.data.redis.core.RedisHash

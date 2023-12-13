@@ -1,4 +1,4 @@
-package com.quorum.api.vereadores.models
+package com.quorum.api.vereadores.modelos
 
 import org.springframework.data.annotation.Id
 import org.springframework.data.redis.core.RedisHash

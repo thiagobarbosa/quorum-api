@@ -1,6 +1,6 @@
 package com.quorum.api.reembolsos.repositories
 
-import com.quorum.api.reembolsos.models.ItemReembolso
+import com.quorum.api.reembolsos.modelos.ItemReembolso
 import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Repository
 

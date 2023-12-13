@@ -1,7 +1,7 @@
 package com.quorum.api.config
 
 import com.github.benmanes.caffeine.cache.LoadingCache
-import com.quorum.api.authentication.models.obterLimiteRequisicao
+import com.quorum.api.authentication.modelos.obterLimiteRequisicao
 import com.quorum.api.authentication.servicos.ServicoAutenticacao
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Component
