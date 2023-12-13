@@ -34,7 +34,7 @@ class ServicoFornecedor(
     }
 
     @Transactional
-    fun atualizarFornecedores(ano: String, mes: String): List<Fornecedor> {
+    fun atualizarFornecedores(ano: Int, mes: Int): List<Fornecedor> {
         val url = obterDebitoVereador
         val xmlResponse = makePostRequest(url, ano, mes)
         val responseObj = parseXmlResponse(xmlResponse)

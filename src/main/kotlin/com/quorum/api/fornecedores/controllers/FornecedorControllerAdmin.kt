@@ -18,8 +18,8 @@ class FornecedorControllerAdmin(
 
     @PutMapping("/atualizar")
     fun atualizarFornecedores(
-        @RequestParam ano: String,
-        @RequestParam mes: String
+        @RequestParam ano: Int,
+        @RequestParam mes: Int
     ): List<Fornecedor> {
         return servicoFornecedor.atualizarFornecedores(ano, mes)
     }

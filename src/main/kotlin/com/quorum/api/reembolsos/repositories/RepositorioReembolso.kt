@@ -9,4 +9,5 @@ interface RepositorioReembolso : CrudRepository<ItemReembolso, String> {
     fun findAllByIdVereador(id: String): List<ItemReembolso>
     fun findAllByCnpj(cnpj: String): List<ItemReembolso>
     fun findAllByIdDespesa(id: String): List<ItemReembolso>
+    fun findAllByAno(ano: Int): List<ItemReembolso>
 }

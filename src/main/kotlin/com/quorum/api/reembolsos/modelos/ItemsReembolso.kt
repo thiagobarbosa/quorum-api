@@ -29,6 +29,7 @@ data class ItemReembolso(
     @JacksonXmlProperty(localName = "TIPODEPARTAMENTO")
     val tipoDepartamento: Int,
     @JacksonXmlProperty(localName = "ANO")
+    @Indexed
     val ano: Int,
     @JacksonXmlProperty(localName = "MES")
     val mes: Int,

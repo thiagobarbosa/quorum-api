@@ -18,10 +18,9 @@ class ReembolsoControllerAdmin(
 
     @PutMapping("/atualizar")
     fun atualizarReembolsos(
-        @RequestParam ano: String,
-        @RequestParam mes: String
+        @RequestParam ano: Int
     ): List<ItemReembolso> {
-        return servicoReembolso.atualizarReembolsos(ano, mes)
+        return servicoReembolso.atualizarReembolsos(ano)
     }
 
     @DeleteMapping("/apagar/todos")

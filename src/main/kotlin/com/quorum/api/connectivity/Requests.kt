@@ -5,12 +5,12 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okio.IOException
 
-fun makePostRequest(url: String, ano: String, mes: String): String {
+fun makePostRequest(url: String, ano: Int, mes: Int): String {
     val client = OkHttpClient()
 
     val formBody = FormBody.Builder()
-        .add("ano", ano)
-        .add("mes", mes)
+        .add("ano", ano.toString())
+        .add("mes", mes.toString())
         .build()
 
     val request = Request.Builder()

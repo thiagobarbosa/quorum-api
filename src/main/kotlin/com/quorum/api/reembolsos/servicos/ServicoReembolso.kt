@@ -11,6 +11,9 @@ import com.quorum.api.redisflag.RedisCacheFlag
 import com.quorum.api.redisflag.RepositorioRedisCacheFlag
 import com.quorum.api.reembolsos.modelos.ItemReembolso
 import com.quorum.api.reembolsos.repositories.RepositorioReembolso
+import com.quorum.api.utils.ANO_ATUAL
+import com.quorum.api.utils.ANO_INICIO
+import com.quorum.api.utils.MES_ATUAL
 import com.quorum.api.vereadores.modelos.Vereador
 import com.quorum.api.vereadores.servicos.ServicoVereador
 import org.springframework.stereotype.Service
@@ -35,35 +38,53 @@ class ServicoReembolso(
     }
 
     @Transactional
-    fun atualizarReembolsos(ano: String, mes: String): List<ItemReembolso> {
-        // Since the source API doesn't have a unique identifier for each item, we need to delete all
-        repositorioReembolso.deleteAll()
-        val url = obterDebitoVereador
-        val xmlResponse = makePostRequest(url, ano, mes)
-        val responseObj = parseXmlResponse(xmlResponse)
+    fun atualizarReembolsos(ano: Int): List<ItemReembolso> {
+        if (ano > ANO_ATUAL || ano < ANO_INICIO) {
+            throw Exception("Dados disponiveis somente a partir de $ANO_INICIO até $ANO_ATUAL")
+        }
 
-        val reembolsos = responseObj.items.map {
-            val cnpjFormatado = it.cnpj.replace(".", "").replace("/", "").replace("-", "")
-            val despesa = despesaService.obterDespesaPorNome(it.nomeDespesa) ?: despesaService.criarDespesa(Despesa(nomeCategoria = it.nomeDespesa))
-            val vereador = servicoVereador.obterVereadorPorNome(it.nomeVereador) ?: servicoVereador.criarVereador(Vereador(id = it.idVereador, nome = it.nomeVereador))
-            val fornecedor = servicoFornecedor.obterFornecedorPorCnpj(cnpjFormatado) ?: servicoFornecedor.criarFornecedor(
-                Fornecedor(cnpj = cnpjFormatado, nome = it.fornecedor)
-            )
-            repositorioReembolso.save(
-                ItemReembolso(
-                    idVereador = vereador.id,
-                    nomeVereador = vereador.nome,
-                    idCentroCusto = it.idCentroCusto,
-                    departamento = it.departamento,
-                    tipoDepartamento = it.tipoDepartamento,
-                    ano = it.ano,
-                    mes = it.mes,
-                    nomeDespesa = despesa.nomeCategoria,
-                    idDespesa = despesa.id,
-                    cnpj = fornecedor.cnpj,
-                    fornecedor = fornecedor.nome,
-                    valor = it.valor
-                )
+        // Já que a API fonte nao possui uma chave unica para reembolsos, apagamos todos os reembolsos do ano
+        val reembolsosExistentesAno = repositorioReembolso.findAllByAno(ano)
+        repositorioReembolso.deleteAll(reembolsosExistentesAno)
+
+        val url = obterDebitoVereador
+
+        val ultimoMes = if (ano == ANO_ATUAL) MES_ATUAL else 12
+        val reembolsosAdicionados: MutableList<ItemReembolso> = mutableListOf()
+
+        (1..ultimoMes).forEach { mes ->
+            val xmlResponse = makePostRequest(url, ano, mes)
+            val responseObj = parseXmlResponse(xmlResponse)
+
+            repositorioReembolso.findById(responseObj.items.first().idVereador).ifPresent {
+                throw Exception("Reembolsos já atualizados para o ano $ano")
+            }
+
+            reembolsosAdicionados.addAll(
+                responseObj.items.map {
+                    val cnpjFormatado = it.cnpj.replace(".", "").replace("/", "").replace("-", "")
+                    val despesa = despesaService.obterDespesaPorNome(it.nomeDespesa) ?: despesaService.criarDespesa(Despesa(nomeCategoria = it.nomeDespesa))
+                    val vereador = servicoVereador.obterVereadorPorNome(it.nomeVereador) ?: servicoVereador.criarVereador(Vereador(id = it.idVereador, nome = it.nomeVereador))
+                    val fornecedor = servicoFornecedor.obterFornecedorPorCnpj(cnpjFormatado) ?: servicoFornecedor.criarFornecedor(
+                        Fornecedor(cnpj = cnpjFormatado, nome = it.fornecedor)
+                    )
+                    repositorioReembolso.save(
+                        ItemReembolso(
+                            idVereador = vereador.id,
+                            nomeVereador = vereador.nome,
+                            idCentroCusto = it.idCentroCusto,
+                            departamento = it.departamento,
+                            tipoDepartamento = it.tipoDepartamento,
+                            ano = it.ano,
+                            mes = it.mes,
+                            nomeDespesa = despesa.nomeCategoria,
+                            idDespesa = despesa.id,
+                            cnpj = fornecedor.cnpj,
+                            fornecedor = fornecedor.nome,
+                            valor = it.valor
+                        )
+                    )
+                }
             )
         }
 
@@ -74,7 +95,7 @@ class ServicoReembolso(
             )
         )
 
-        return reembolsos
+        return reembolsosAdicionados
     }
 
     fun obterTodosReembolsos(): List<ItemReembolso> {

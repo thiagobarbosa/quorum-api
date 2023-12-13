@@ -18,8 +18,8 @@ class DespesaControllerAdmin(
 
     @PutMapping("/atualizar")
     fun atualizarDespesas(
-        @RequestParam ano: String,
-        @RequestParam mes: String
+        @RequestParam ano: Int,
+        @RequestParam mes: Int
     ): List<Despesa> {
         return despesaService.atualizarDespesas(ano, mes)
     }

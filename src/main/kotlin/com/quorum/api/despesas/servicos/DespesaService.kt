@@ -38,7 +38,7 @@ class DespesaService(
     }
 
     @Transactional
-    fun atualizarDespesas(ano: String, mes: String): List<Despesa> {
+    fun atualizarDespesas(ano: Int, mes: Int): List<Despesa> {
         val url = obterDebitoVereador
         val xmlResponse = makePostRequest(url, ano, mes)
         val responseObj = parseXmlResponse(xmlResponse)
