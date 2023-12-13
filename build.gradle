@@ -33,6 +33,7 @@ dependencies {
 	implementation "org.springframework.boot:spring-boot-starter-security:2.7.6"
 	implementation platform('com.google.cloud:libraries-bom:20.2.0')
 	implementation 'com.google.cloud:google-cloud-secretmanager'
+	implementation 'com.github.ben-manes.caffeine:caffeine:2.8.8'
 }
 
 dependencyManagement {

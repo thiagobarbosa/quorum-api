@@ -1,5 +1,6 @@
 package com.quorum.api.config
 
+import org.springframework.boot.web.servlet.FilterRegistrationBean
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -21,5 +22,13 @@ class SecurityConfig(
             .antMatchers("/v**/admin/**").hasRole("ADMIN")
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.NEVER)
         return http.build()
+    }
+
+    @Bean
+    fun tokenFilterRegistrationBean(): FilterRegistrationBean<TokenFilter> {
+        val registrationBean = FilterRegistrationBean<TokenFilter>()
+        registrationBean.filter = tokenAuthenticationFilter
+        registrationBean.addUrlPatterns("/v1/**")
+        return registrationBean
     }
 }

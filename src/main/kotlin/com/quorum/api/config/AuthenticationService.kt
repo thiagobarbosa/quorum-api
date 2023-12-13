@@ -24,13 +24,18 @@ class AuthenticationService(
         return token
     }
 
-    fun setSecurityContext(token: String) {
-        val authentication = authenticationRepository.findById(token).orElseThrow { Exception("Token not found") }
+    fun getAuthenticationByToken(token: String): Authentication {
+        val authentication = authenticationRepository.findById(token).orElseThrow { Exception("Token $token not found") }
         if (authentication.expirationDate.isBefore(ZonedDateTime.now())) {
-            throw Exception("Token expired")
+            throw Exception("Token $token is expired")
         }
+        setSecurityContext(authentication)
+        return authentication
+    }
+
+    fun setSecurityContext(authentication: Authentication) {
         SecurityContextHolder.getContext().authentication = UsernamePasswordAuthenticationToken(
-            token,
+            authentication.token,
             null,
             listOf(
                 SimpleGrantedAuthority("ROLE_${authentication.role}")
