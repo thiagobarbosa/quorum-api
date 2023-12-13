@@ -12,7 +12,13 @@ import org.springframework.data.redis.serializer.StringRedisSerializer
 class RedisConfig {
     @Bean
     fun jedisConnectionFactory(): JedisConnectionFactory {
-        val redisStandaloneConfiguration = RedisStandaloneConfiguration("localhost", 6379)
+        val redisHost = try {
+            SecretManagerAccessor.getSecret("redisHost")
+        } catch (e: Exception) {
+            "localhost"
+        }
+
+        val redisStandaloneConfiguration = RedisStandaloneConfiguration(redisHost, 6379)
         val jedisConnectionFactory = JedisConnectionFactory(redisStandaloneConfiguration)
         jedisConnectionFactory.afterPropertiesSet()
         return jedisConnectionFactory
@@ -20,13 +26,19 @@ class RedisConfig {
 
     @Bean
     fun lettuceConnectionFactory(): LettuceConnectionFactory {
-        val redisStandaloneConfiguration = RedisStandaloneConfiguration("localhost", 6379)
+        val redisHost = try {
+            SecretManagerAccessor.getSecret("redisHost")
+        } catch (e: Exception) {
+            "localhost"
+        }
+
+        val redisStandaloneConfiguration = RedisStandaloneConfiguration(redisHost, 6379)
         return LettuceConnectionFactory(redisStandaloneConfiguration)
     }
 
     @Bean
     fun redisTemplate(): RedisTemplate<String, Any> {
-        val connectionFactory = lettuceConnectionFactory()
+        val connectionFactory = jedisConnectionFactory()
         val template = RedisTemplate<String, Any>()
         template.setConnectionFactory(connectionFactory)
         template.setDefaultSerializer(StringRedisSerializer())

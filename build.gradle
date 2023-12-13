@@ -6,6 +6,7 @@ plugins {
 	id 'org.jetbrains.kotlin.jvm' version '1.9.20'
 	id 'org.jetbrains.kotlin.plugin.spring' version '1.9.20'
 	id "org.jlleitschuh.gradle.ktlint" version "11.5.1"
+	id 'com.google.cloud.tools.appengine' version '2.4.4'
 }
 
 group = 'com.quorum'
@@ -30,6 +31,8 @@ dependencies {
 	implementation 'redis.clients:jedis:3.7.0'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	implementation "org.springframework.boot:spring-boot-starter-security:2.7.6"
+	implementation platform('com.google.cloud:libraries-bom:20.2.0')
+	implementation 'com.google.cloud:google-cloud-secretmanager'
 }
 
 dependencyManagement {

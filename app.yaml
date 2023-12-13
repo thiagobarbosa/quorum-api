@@ -1,0 +1,4 @@
+runtime: java17
+instance_class: F1
+vpc_access_connector:
+  name: projects/quorum-api/locations/southamerica-east1/connectors/vpc-connector
