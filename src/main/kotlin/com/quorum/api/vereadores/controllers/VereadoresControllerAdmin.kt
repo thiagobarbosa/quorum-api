@@ -18,10 +18,9 @@ class VereadoresControllerAdmin(
 
     @PutMapping("/atualizar")
     fun atualizarVereadores(
-        @RequestParam ano: Int,
-        @RequestParam mes: Int
+        @RequestParam ano: Int
     ): List<Vereador> {
-        return servicoVereador.atualizarVereadores(ano, mes)
+        return servicoVereador.atualizarVereadores(ano)
     }
 
     @DeleteMapping("/apagar/todos")

@@ -42,7 +42,7 @@ class ServicoFornecedor(
             throw Exception("Dados disponiveis somente a partir de $ANO_INICIO até $ANO_ATUAL")
         }
 
-        val ultimoMes = if (ano == ANO_ATUAL) MES_ATUAL else 12
+        val ultimoMes = if (ano == ANO_ATUAL) MES_ATUAL.minus(1) else 12
         val fornecedoresAdicionados: MutableList<Fornecedor> = mutableListOf()
 
         val url = obterDebitoVereador

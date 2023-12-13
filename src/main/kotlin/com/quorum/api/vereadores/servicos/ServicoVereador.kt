@@ -48,7 +48,7 @@ class ServicoVereador(
 
         val url = obterDebitoVereador
 
-        val ultimoMes = if (ano == ANO_ATUAL) MES_ATUAL else 12
+        val ultimoMes = if (ano == ANO_ATUAL) MES_ATUAL.minus(1) else 12
         val vereadoresAdicionados: MutableList<Vereador> = mutableListOf()
 
         (1..ultimoMes).forEach { mes ->
