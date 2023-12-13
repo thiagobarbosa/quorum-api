@@ -6,7 +6,9 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import javax.annotation.security.RolesAllowed
 
+@RolesAllowed("ROLE_USER", "ROLE_PUBLIC")
 @RestController
 @RequestMapping("/v1/vereadores/")
 class VereadorController(

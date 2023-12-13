@@ -1,6 +1,7 @@
 package com.quorum.api.config
 
 import com.github.benmanes.caffeine.cache.LoadingCache
+import com.quorum.api.authentication.models.getRequestLimit
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Component
 import org.springframework.web.filter.GenericFilterBean
@@ -24,26 +25,25 @@ class TokenFilter(
         val httpRequest = request as HttpServletRequest
         val httpResponse = response as HttpServletResponse
 
-        val headerToken = httpRequest.getHeader("token") ?: run {
-            httpResponse.sendResponse(HttpServletResponse.SC_UNAUTHORIZED, "Token is required to use this API.")
-            return
+        val headerToken = httpRequest.getHeader("token")
+
+        if (headerToken != null) {
+            val auth = try {
+                authenticationService.getAuthenticationByToken(headerToken)
+            } catch (e: Exception) {
+                httpResponse.sendResponse(HttpServletResponse.SC_UNAUTHORIZED, e.message)
+                return
+            }
+
+            val requests = requestLimitCache.get(auth.token) ?: 0
+
+            if (requests >= auth.getRequestLimit()) {
+                httpResponse.sendResponse(HttpStatus.TOO_MANY_REQUESTS.value(), "Too many requests. Please wait a minute a try again.")
+                return
+            }
+
+            requestLimitCache.put(headerToken, requests + 1)
         }
-
-        val auth = try {
-            authenticationService.getAuthenticationByToken(headerToken)
-        } catch (e: Exception) {
-            httpResponse.sendResponse(HttpServletResponse.SC_UNAUTHORIZED, e.message)
-            return
-        }
-
-        val requests = requestLimitCache.get(auth.token) ?: 0
-
-        if (requests >= MAX_REQUESTS_PER_MINUTE) {
-            httpResponse.sendResponse(HttpStatus.TOO_MANY_REQUESTS.value(), "Too many requests. Please wait a minute a try again.")
-            return
-        }
-
-        requestLimitCache.put(headerToken, requests + 1)
 
         chain.doFilter(request, response)
     }

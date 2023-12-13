@@ -17,10 +17,36 @@ class AuthenticationService(
 
     // Temporarily setting the token as a role admin
     @Transactional
-    fun generateToken(): String {
-        authenticationRepository.deleteAll()
+    fun generateAdminToken(): Authentication {
         val token = UUID.randomUUID().toString()
-        authenticationRepository.save(Authentication(token = token, expirationDate = ZonedDateTime.now().plusDays(365), role = "ADMIN"))
+        return authenticationRepository.save(Authentication(token = token, expirationDate = ZonedDateTime.now().plusDays(365), role = "ADMIN"))
+    }
+
+    fun getAllAuthentications(): List<Authentication> {
+        return authenticationRepository.findAll().toList()
+    }
+
+    @Transactional
+    fun generateUserToken(email: String): String {
+        if (email.isBlank()) throw Exception("Email cannot be blank")
+
+        val existingToken = authenticationRepository.findByEmail(email)
+        if (existingToken != null) {
+            throw Exception(
+                "Email $email already has a token. Generate a new one with a different email.\n" +
+                    "If you need to recover your token please contact us via https://github.com/thiagobarbosa/quorum-api"
+            )
+        }
+
+        val token = UUID.randomUUID().toString()
+        authenticationRepository.save(Authentication(token = token, expirationDate = ZonedDateTime.now().plusDays(365), role = "USER", email = email))
+        return token
+    }
+
+    @Transactional
+    fun generatePublicToken(): String {
+        val token = UUID.randomUUID().toString()
+        authenticationRepository.save(Authentication(token = token, expirationDate = ZonedDateTime.now().plusDays(7), role = "PUBLIC"))
         return token
     }
 
@@ -31,6 +57,20 @@ class AuthenticationService(
         }
         setSecurityContext(authentication)
         return authentication
+    }
+
+    @Transactional
+    fun deleteToken(token: String): Authentication {
+        val adminAuth = authenticationRepository.findById(token).orElseThrow { Exception("Token $token not found") }
+        authenticationRepository.delete(adminAuth)
+        return adminAuth
+    }
+
+    @Transactional
+    fun deleteAllAdminTokens(): List<Authentication> {
+        val adminTokens = authenticationRepository.findAllByRole("ADMIN")
+        authenticationRepository.deleteAll(adminTokens)
+        return adminTokens
     }
 
     fun setSecurityContext(authentication: Authentication) {

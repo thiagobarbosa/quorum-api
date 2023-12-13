@@ -19,7 +19,7 @@ class SecurityConfig(
         http.csrf().disable()
             .addFilterBefore(tokenAuthenticationFilter, BasicAuthenticationFilter::class.java)
             .authorizeRequests()
-            .antMatchers("/v**/admin/**").hasRole("ADMIN")
+            .antMatchers("/auth/**").permitAll()
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.NEVER)
         return http.build()
     }
