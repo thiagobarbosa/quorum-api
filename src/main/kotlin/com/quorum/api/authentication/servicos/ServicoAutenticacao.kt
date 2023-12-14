@@ -2,6 +2,7 @@ package com.quorum.api.authentication.servicos
 
 import com.quorum.api.authentication.modelos.Autenticacao
 import com.quorum.api.authentication.repositories.RepositorioAutenticacao
+import com.quorum.api.messaging.ServicoEmail
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
@@ -12,7 +13,8 @@ import java.util.UUID
 
 @Service
 class ServicoAutenticacao(
-    val repositorioAutenticacao: RepositorioAutenticacao
+    private val repositorioAutenticacao: RepositorioAutenticacao,
+    private val servicoEmail: ServicoEmail
 ) {
 
     // Temporarily setting the token as a role admin
@@ -39,7 +41,9 @@ class ServicoAutenticacao(
         }
 
         val token = UUID.randomUUID().toString()
-        return repositorioAutenticacao.save(Autenticacao(token = token, dataExpiracao = ZonedDateTime.now().plusDays(365), role = "USER", email = email))
+        servicoEmail.sendEmail(email, "Your Quorum API token", token)
+        val tokenSalvo = repositorioAutenticacao.save(Autenticacao(token = token, dataExpiracao = ZonedDateTime.now().plusDays(365), role = "USER", email = email))
+        return Autenticacao(token = "token enviado por email", dataExpiracao = tokenSalvo.dataExpiracao, role = tokenSalvo.role, email = tokenSalvo.email)
     }
 
     @Transactional
