@@ -12,6 +12,7 @@ class Autenticacao(
     val dataExpiracao: ZonedDateTime,
     @Indexed
     val role: String,
+    @Indexed
     val email: String? = null
 )
 

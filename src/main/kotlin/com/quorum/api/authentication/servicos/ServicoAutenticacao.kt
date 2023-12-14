@@ -35,7 +35,7 @@ class ServicoAutenticacao(
         val tokenExistente = repositorioAutenticacao.findByEmail(email)
         if (tokenExistente != null) {
             throw Exception(
-                "Email $email já possui um token.\n" +
+                "Email $email já possui um token. " +
                     "Se precisar recuperar seu token nos contate pelo Github: https://github.com/thiagobarbosa/quorum-api"
             )
         }
