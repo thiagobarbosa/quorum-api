@@ -34,7 +34,8 @@ dependencies {
 	implementation platform('com.google.cloud:libraries-bom:20.2.0')
 	implementation 'com.google.cloud:google-cloud-secretmanager'
 	implementation 'com.github.ben-manes.caffeine:caffeine:2.8.8'
-	implementation("org.springframework.boot:spring-boot-starter-mail")
+	implementation 'com.resend:resend-java:2.2.1'
+
 }
 
 dependencyManagement {
