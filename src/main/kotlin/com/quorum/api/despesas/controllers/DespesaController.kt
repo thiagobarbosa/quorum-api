@@ -15,12 +15,12 @@ class DespesaController(
     private val despesaService: DespesaService
 ) {
     @GetMapping
-    fun getAllDespesas(): List<Despesa> {
+    fun obterTodasDespesas(): List<Despesa> {
         return despesaService.obterTodasDespesas()
     }
 
     @GetMapping("/{id}")
-    fun getVereadorById(
+    fun obterDespesaPorId(
         @PathVariable id: String
     ): Despesa {
         return despesaService.obterDespesaPorId(id) ?: throw Exception("Despesa não encontrado")
