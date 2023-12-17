@@ -14,6 +14,6 @@ class CacheConfig {
         return Caffeine.newBuilder()
             .expireAfterWrite(1, TimeUnit.MINUTES)
             .maximumSize(100)
-            .build { key -> 0 }
+            .build { _ -> 0 }
     }
 }

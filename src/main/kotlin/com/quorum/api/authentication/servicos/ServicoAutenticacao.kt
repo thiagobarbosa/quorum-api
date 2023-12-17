@@ -63,9 +63,9 @@ class ServicoAutenticacao(
 
     @Transactional
     fun apagarToken(token: String): Autenticacao {
-        val token = repositorioAutenticacao.findById(token).orElseThrow { Exception("Token $token nao encontrado") }
-        repositorioAutenticacao.delete(token)
-        return token
+        val tokenExistente = repositorioAutenticacao.findById(token).orElseThrow { Exception("Token $token nao encontrado") }
+        repositorioAutenticacao.delete(tokenExistente)
+        return tokenExistente
     }
 
     @Transactional

@@ -2,6 +2,13 @@ package com.quorum.api.reembolsos.controllers
 
 import com.quorum.api.reembolsos.modelos.ItemReembolso
 import com.quorum.api.reembolsos.servicos.ServicoReembolso
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.Parameter
+import io.swagger.v3.oas.annotations.enums.ParameterIn
+import io.swagger.v3.oas.annotations.media.Content
+import io.swagger.v3.oas.annotations.media.Schema
+import io.swagger.v3.oas.annotations.responses.ApiResponse
+import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestMapping
@@ -11,18 +18,55 @@ import javax.annotation.security.RolesAllowed
 
 @RolesAllowed("ROLE_ADMIN")
 @RestController
+@Tag(name = "0. Administrador", description = "Endpoints restritos para administradores")
 @RequestMapping("/v1/admin/reembolsos")
 class ReembolsoControllerAdmin(
     private val servicoReembolso: ServicoReembolso
 ) {
 
+    @Operation(
+        summary = "Atualizar reembolsos",
+        description = "Atualiza a lista de reembolsos com base no ano informado",
+        responses = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Sucesso",
+                content = [Content(mediaType = "application/json", schema = Schema(implementation = ItemReembolso::class))]
+            ),
+            ApiResponse(
+                responseCode = "400",
+                description = "Acesso negado"
+            )
+        ],
+        parameters = [
+            Parameter(`in` = ParameterIn.HEADER, name = "token", description = "Token de acesso", required = true, schema = Schema(type = "string"))
+        ]
+    )
     @PutMapping("/atualizar")
     fun atualizarReembolsos(
-        @RequestParam ano: Int
+        @Parameter(description = "Ano no banco de dados") @RequestParam ano: Int
     ): List<ItemReembolso> {
         return servicoReembolso.atualizarReembolsos(ano)
     }
 
+    @Operation(
+        summary = "Apagar reembolsos",
+        description = "Remove todos os reembolsos do banco de dados",
+        responses = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Sucesso",
+                content = [Content(mediaType = "application/json", schema = Schema(implementation = ItemReembolso::class))]
+            ),
+            ApiResponse(
+                responseCode = "400",
+                description = "Acesso negado"
+            )
+        ],
+        parameters = [
+            Parameter(`in` = ParameterIn.HEADER, name = "token", description = "Token de acesso", required = true, schema = Schema(type = "string"))
+        ]
+    )
     @DeleteMapping("/apagar/todos")
     fun apagarTodosReembolsos(): List<ItemReembolso> {
         return servicoReembolso.apagarTodosReembolsos()

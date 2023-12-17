@@ -2,14 +2,14 @@ package com.quorum.api.reembolsos.controllers
 
 import com.quorum.api.reembolsos.modelos.ItemReembolso
 import com.quorum.api.reembolsos.servicos.ServicoReembolso
+import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import javax.annotation.security.RolesAllowed
 
-@RolesAllowed("ROLE_ADMIN", "ROLE_USER", "ROLE_PUBLIC")
 @RestController
+@Tag(name = "5. Reembolsos", description = "Dados de reembolsos")
 @RequestMapping("/v1/reembolsos")
 class ReembolsoController(
     private val servicoReembolso: ServicoReembolso
