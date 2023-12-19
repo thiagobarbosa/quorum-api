@@ -98,8 +98,30 @@ class ServicoReembolso(
         return reembolsosAdicionados
     }
 
-    fun obterTodosReembolsos(): List<ItemReembolso> {
-        return repositorioReembolso.findAll().toList()
+    fun obterTodosReembolsos(idVereador: String?, idDespesa: String?, cnpj: String?, ano: Int?, mes: Int?): List<ItemReembolso> {
+        var reembolsosFiltrados = repositorioReembolso.findAll().toList()
+
+        if (ano != null) {
+            reembolsosFiltrados = reembolsosFiltrados.filter { it.ano == ano }
+        }
+
+        if (mes != null) {
+            reembolsosFiltrados = reembolsosFiltrados.filter { it.mes == mes }
+        }
+
+        if (idVereador != null) {
+            reembolsosFiltrados = reembolsosFiltrados.filter { it.idVereador == idVereador }
+        }
+
+        if (idDespesa != null) {
+            reembolsosFiltrados = reembolsosFiltrados.filter { it.idDespesa == idDespesa }
+        }
+
+        if (cnpj != null) {
+            reembolsosFiltrados = reembolsosFiltrados.filter { it.cnpj == cnpj }
+        }
+
+        return reembolsosFiltrados
     }
 
     fun obterReembolsoPorIdVereador(id: String): List<ItemReembolso> {
