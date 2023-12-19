@@ -1,6 +1,5 @@
 package com.quorum.api.vereadores.controllers
 
-import com.quorum.api.reembolsos.modelos.ItemReembolso
 import com.quorum.api.vereadores.modelos.Vereador
 import com.quorum.api.vereadores.servicos.ServicoVereador
 import io.swagger.v3.oas.annotations.Operation
