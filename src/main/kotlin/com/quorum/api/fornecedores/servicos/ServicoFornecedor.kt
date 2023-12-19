@@ -10,6 +10,7 @@ import com.quorum.api.redisflag.RepositorioRedisCacheFlag
 import com.quorum.api.utils.ANO_ATUAL
 import com.quorum.api.utils.ANO_INICIO
 import com.quorum.api.utils.MES_ATUAL
+import com.quorum.api.utils.defaultPageable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import parseXmlResponse
@@ -28,8 +29,8 @@ class ServicoFornecedor(
         return fornecedores
     }
 
-    fun obterTodosFornecedores(): List<Fornecedor> {
-        return repositorioFornecedor.findAll().toList()
+    fun obterTodosFornecedores(page: Int? = 0, pageSize: Int? = 100): List<Fornecedor> {
+        return repositorioFornecedor.findAll(defaultPageable(page, pageSize)).toList()
     }
 
     fun obterFornecedorPorCnpj(id: String): Fornecedor? {

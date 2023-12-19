@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
@@ -39,8 +40,11 @@ class DespesaController(
         ]
     )
     @GetMapping
-    fun obterTodasDespesas(): List<Despesa> {
-        return despesaService.obterTodasDespesas()
+    fun obterTodasDespesas(
+        @Parameter(description = "Pagina do resultado") @RequestParam page: Int?,
+        @Parameter(description = "Tamanho da pagina do resultado") @RequestParam pageSize: Int?
+    ): List<Despesa> {
+        return despesaService.obterTodasDespesas(page, pageSize)
     }
 
     @Operation(

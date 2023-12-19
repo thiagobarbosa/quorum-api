@@ -8,6 +8,7 @@ import com.quorum.api.redisflag.RepositorioRedisCacheFlag
 import com.quorum.api.utils.ANO_ATUAL
 import com.quorum.api.utils.ANO_INICIO
 import com.quorum.api.utils.MES_ATUAL
+import com.quorum.api.utils.defaultPageable
 import com.quorum.api.vereadores.modelos.Vereador
 import com.quorum.api.vereadores.repositorios.RepositorioVereador
 import org.springframework.stereotype.Service
@@ -36,8 +37,8 @@ class ServicoVereador(
         return repositorioVereador.findByNome(nome)
     }
 
-    fun obterTodosVereadores(): List<Vereador> {
-        return repositorioVereador.findAll().toList()
+    fun obterTodosVereadores(page: Int? = 0, pageSize: Int? = 100): List<Vereador> {
+        return repositorioVereador.findAll(defaultPageable(page, pageSize)).toList()
     }
 
     @Transactional

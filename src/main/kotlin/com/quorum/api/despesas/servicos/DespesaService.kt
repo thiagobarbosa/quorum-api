@@ -10,6 +10,7 @@ import com.quorum.api.redisflag.RepositorioRedisCacheFlag
 import com.quorum.api.utils.ANO_ATUAL
 import com.quorum.api.utils.ANO_INICIO
 import com.quorum.api.utils.MES_ATUAL
+import com.quorum.api.utils.defaultPageable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import parseXmlResponse
@@ -28,8 +29,8 @@ class DespesaService(
         return despesas
     }
 
-    fun obterTodasDespesas(): List<Despesa> {
-        return repositorioDespesa.findAll().toList()
+    fun obterTodasDespesas(page: Int? = 0, pageSize: Int? = 100): List<Despesa> {
+        return repositorioDespesa.findAll(defaultPageable(page, pageSize)).toList()
     }
 
     fun obterDespesaPorId(id: String): Despesa? {

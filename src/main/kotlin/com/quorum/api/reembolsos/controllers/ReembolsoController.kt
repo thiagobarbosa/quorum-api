@@ -45,8 +45,10 @@ class ReembolsoController(
         @Parameter(description = "ID da despesa") @RequestParam idDespesa: String? = null,
         @Parameter(description = "CNPJ do fornecedor") @RequestParam cnpj: String? = null,
         @Parameter(description = "Ano do reembolso") @RequestParam ano: Int? = null,
-        @Parameter(description = "Mes do reembolso") @RequestParam mes: Int? = null
+        @Parameter(description = "Mes do reembolso") @RequestParam mes: Int? = null,
+        @Parameter(description = "Pagina do resultado") @RequestParam page: Int?,
+        @Parameter(description = "Tamanho da pagina do resultado") @RequestParam pageSize: Int?
     ): List<ItemReembolso> {
-        return servicoReembolso.obterTodosReembolsos(idVereador, idDespesa, cnpj, ano, mes)
+        return servicoReembolso.obterTodosReembolsos(idVereador, idDespesa, cnpj, ano, mes, page, pageSize)
     }
 }

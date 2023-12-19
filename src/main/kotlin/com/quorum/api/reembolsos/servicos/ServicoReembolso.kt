@@ -14,6 +14,7 @@ import com.quorum.api.reembolsos.repositories.RepositorioReembolso
 import com.quorum.api.utils.ANO_ATUAL
 import com.quorum.api.utils.ANO_INICIO
 import com.quorum.api.utils.MES_ATUAL
+import com.quorum.api.utils.defaultPageable
 import com.quorum.api.vereadores.modelos.Vereador
 import com.quorum.api.vereadores.servicos.ServicoVereador
 import org.springframework.stereotype.Service
@@ -98,8 +99,8 @@ class ServicoReembolso(
         return reembolsosAdicionados
     }
 
-    fun obterTodosReembolsos(idVereador: String?, idDespesa: String?, cnpj: String?, ano: Int?, mes: Int?): List<ItemReembolso> {
-        var reembolsosFiltrados = repositorioReembolso.findAll().toList()
+    fun obterTodosReembolsos(idVereador: String?, idDespesa: String?, cnpj: String?, ano: Int?, mes: Int?, page: Int? = 0, pageSize: Int? = 100): List<ItemReembolso> {
+        var reembolsosFiltrados = repositorioReembolso.findAll(defaultPageable(page, pageSize)).toList()
 
         if (ano != null) {
             reembolsosFiltrados = reembolsosFiltrados.filter { it.ano == ano }
