@@ -7,13 +7,14 @@ import com.quorum.api.despesas.servicos.DespesaService
 import com.quorum.api.fornecedores.modelos.Fornecedor
 import com.quorum.api.fornecedores.servicos.ServicoFornecedor
 import com.quorum.api.reembolsos.modelos.ItemReembolso
+import com.quorum.api.reembolsos.repositories.ReembolsoSpecification
 import com.quorum.api.reembolsos.repositories.RepositorioReembolso
 import com.quorum.api.utils.ANO_ATUAL
 import com.quorum.api.utils.ANO_INICIO
 import com.quorum.api.utils.MES_ATUAL
-import com.quorum.api.utils.defaultPageable
 import com.quorum.api.vereadores.modelos.Vereador
 import com.quorum.api.vereadores.servicos.ServicoVereador
+import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import parseXmlResponse
@@ -102,40 +103,8 @@ class ServicoReembolso(
     }
 
     fun obterTodosReembolsos(idVereador: String?, idDespesa: String?, cnpj: String?, ano: Int?, mes: Int?, page: Int? = 0, pageSize: Int? = 100): List<ItemReembolso> {
-        var reembolsosFiltrados = repositorioReembolso.findAll(defaultPageable(page, pageSize)).toList()
-
-        if (ano != null) {
-            reembolsosFiltrados = reembolsosFiltrados.filter { it.ano == ano }
-        }
-
-        if (mes != null) {
-            reembolsosFiltrados = reembolsosFiltrados.filter { it.mes == mes }
-        }
-
-        if (idVereador != null) {
-            reembolsosFiltrados = reembolsosFiltrados.filter { it.idVereador == idVereador }
-        }
-
-        if (idDespesa != null) {
-            reembolsosFiltrados = reembolsosFiltrados.filter { it.idDespesa == idDespesa }
-        }
-
-        if (cnpj != null) {
-            reembolsosFiltrados = reembolsosFiltrados.filter { it.cnpj == cnpj }
-        }
-
-        return reembolsosFiltrados
-    }
-
-    fun obterReembolsoPorIdVereador(id: String): List<ItemReembolso> {
-        return repositorioReembolso.findAllByIdVereador(id)
-    }
-
-    fun obterReembolsoPorIdDespesa(idDespesa: String): List<ItemReembolso> {
-        return repositorioReembolso.findAllByIdDespesa(idDespesa).toList()
-    }
-
-    fun obterReembolsoPorCnpj(cnpj: String): List<ItemReembolso> {
-        return repositorioReembolso.findAllByCnpj(cnpj)
+        val specification = ReembolsoSpecification(idVereador, idDespesa, cnpj, ano, mes)
+        val pageable = PageRequest.of(page ?: 0, pageSize ?: 100)
+        return repositorioReembolso.findAll(specification, pageable).content
     }
 }
