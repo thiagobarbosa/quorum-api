@@ -12,9 +12,9 @@ import com.quorum.api.reembolsos.repositories.RepositorioReembolso
 import com.quorum.api.utils.ANO_ATUAL
 import com.quorum.api.utils.ANO_INICIO
 import com.quorum.api.utils.MES_ATUAL
+import com.quorum.api.utils.defaultPageable
 import com.quorum.api.vereadores.modelos.Vereador
 import com.quorum.api.vereadores.servicos.ServicoVereador
-import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import parseXmlResponse
@@ -104,7 +104,6 @@ class ServicoReembolso(
 
     fun obterTodosReembolsos(idVereador: String?, idDespesa: String?, cnpj: String?, ano: Int?, mes: Int?, page: Int? = 0, pageSize: Int? = 100): List<ItemReembolso> {
         val specification = ReembolsoSpecification(idVereador, idDespesa, cnpj, ano, mes)
-        val pageable = PageRequest.of(page ?: 0, pageSize ?: 100)
-        return repositorioReembolso.findAll(specification, pageable).content
+        return repositorioReembolso.findAll(specification, defaultPageable(page, pageSize)).content
     }
 }
