@@ -6,9 +6,6 @@ import com.quorum.api.despesas.modelos.Despesa
 import com.quorum.api.despesas.servicos.DespesaService
 import com.quorum.api.fornecedores.modelos.Fornecedor
 import com.quorum.api.fornecedores.servicos.ServicoFornecedor
-import com.quorum.api.redisflag.ChaveAtualizacao
-import com.quorum.api.redisflag.RedisCacheFlag
-import com.quorum.api.redisflag.RepositorioRedisCacheFlag
 import com.quorum.api.reembolsos.modelos.ItemReembolso
 import com.quorum.api.reembolsos.repositories.RepositorioReembolso
 import com.quorum.api.utils.ANO_ATUAL
@@ -20,15 +17,13 @@ import com.quorum.api.vereadores.servicos.ServicoVereador
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import parseXmlResponse
-import java.time.ZonedDateTime
 
 @Service
 class ServicoReembolso(
     private val repositorioReembolso: RepositorioReembolso,
     private val despesaService: DespesaService,
     private val servicoVereador: ServicoVereador,
-    private val servicoFornecedor: ServicoFornecedor,
-    private val repositorioRedisCacheFlag: RepositorioRedisCacheFlag
+    private val servicoFornecedor: ServicoFornecedor
 ) {
 
     @Transactional
@@ -69,32 +64,25 @@ class ServicoReembolso(
                     val fornecedor = servicoFornecedor.obterFornecedorPorCnpj(cnpjFormatado) ?: servicoFornecedor.criarFornecedor(
                         Fornecedor(cnpj = cnpjFormatado, nome = it.fornecedor)
                     )
-                    repositorioReembolso.save(
-                        ItemReembolso(
-                            idVereador = vereador.id,
-                            nomeVereador = vereador.nome,
-                            idCentroCusto = it.idCentroCusto,
-                            departamento = it.departamento,
-                            tipoDepartamento = it.tipoDepartamento,
-                            ano = it.ano,
-                            mes = it.mes,
-                            nomeDespesa = despesa.nomeCategoria,
-                            idDespesa = despesa.id,
-                            cnpj = fornecedor.cnpj,
-                            fornecedor = fornecedor.nome,
-                            valor = it.valor
-                        )
+                    ItemReembolso(
+                        idVereador = vereador.id,
+                        nomeVereador = vereador.nome,
+                        idCentroCusto = it.idCentroCusto,
+                        departamento = it.departamento,
+                        tipoDepartamento = it.tipoDepartamento,
+                        ano = it.ano,
+                        mes = it.mes,
+                        nomeDespesa = despesa.nomeCategoria,
+                        idDespesa = despesa.id,
+                        cnpj = fornecedor.cnpj,
+                        fornecedor = fornecedor.nome,
+                        valor = it.valor
                     )
                 }
             )
         }
 
-        repositorioRedisCacheFlag.save(
-            RedisCacheFlag(
-                id = ChaveAtualizacao.ULTIMA_ATUALIZACAO_REEMBOLSOS.name,
-                valor = ZonedDateTime.now()
-            )
-        )
+        repositorioReembolso.saveAll(reembolsosAdicionados)
 
         return reembolsosAdicionados
     }

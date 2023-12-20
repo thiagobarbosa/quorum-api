@@ -2,9 +2,6 @@ package com.quorum.api.vereadores.servicos
 
 import com.quorum.api.connectivity.makePostRequest
 import com.quorum.api.connectivity.obterDebitoVereador
-import com.quorum.api.redisflag.ChaveAtualizacao
-import com.quorum.api.redisflag.RedisCacheFlag
-import com.quorum.api.redisflag.RepositorioRedisCacheFlag
 import com.quorum.api.utils.ANO_ATUAL
 import com.quorum.api.utils.ANO_INICIO
 import com.quorum.api.utils.MES_ATUAL
@@ -14,12 +11,10 @@ import com.quorum.api.vereadores.repositorios.RepositorioVereador
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import parseXmlResponse
-import java.time.ZonedDateTime
 
 @Service
 class ServicoVereador(
-    private val repositorioVereador: RepositorioVereador,
-    private val repositorioRedisCacheFlag: RepositorioRedisCacheFlag
+    private val repositorioVereador: RepositorioVereador
 ) {
 
     @Transactional
@@ -70,13 +65,6 @@ class ServicoVereador(
                 }
             )
         }
-
-        repositorioRedisCacheFlag.save(
-            RedisCacheFlag(
-                id = ChaveAtualizacao.ULTIMA_ATUALIZACAO_VEREADORES.name,
-                valor = ZonedDateTime.now()
-            )
-        )
 
         return vereadoresAdicionados
     }

@@ -1,19 +1,41 @@
 package com.quorum.api.authentication.modelos
 
-import org.springframework.data.annotation.Id
-import org.springframework.data.redis.core.RedisHash
-import org.springframework.data.redis.core.index.Indexed
+import com.quorum.api.annotations.NoArgConstructor
+import org.springframework.data.annotation.CreatedDate
+import org.springframework.data.annotation.LastModifiedDate
+import org.springframework.data.jpa.domain.support.AuditingEntityListener
 import java.time.ZonedDateTime
+import javax.persistence.Column
+import javax.persistence.Entity
+import javax.persistence.EntityListeners
+import javax.persistence.Id
+import javax.persistence.Table
 
-@RedisHash("Autenticacao")
+@Entity
+@Table(name = "autenticacao")
+@EntityListeners(AuditingEntityListener::class)
+@NoArgConstructor
 class Autenticacao(
     @Id
+    @Column(name = "token")
     val token: String,
+
+    @Column(name = "data_expiracao")
     val dataExpiracao: ZonedDateTime,
-    @Indexed
+
+    @Column(name = "role")
     val role: String,
-    @Indexed
-    val email: String? = null
+
+    @Column(name = "email")
+    val email: String? = null,
+
+    @CreatedDate
+    @Column(name = "created_date", updatable = false)
+    var createdDate: ZonedDateTime = ZonedDateTime.now(),
+
+    @LastModifiedDate
+    @Column(name = "modified_time")
+    var modifiedDate: ZonedDateTime = ZonedDateTime.now()
 )
 
 fun Autenticacao.obterLimiteRequisicao(): Int {

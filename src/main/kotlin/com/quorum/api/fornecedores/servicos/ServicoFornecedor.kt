@@ -4,9 +4,6 @@ import com.quorum.api.connectivity.makePostRequest
 import com.quorum.api.connectivity.obterDebitoVereador
 import com.quorum.api.fornecedores.modelos.Fornecedor
 import com.quorum.api.fornecedores.repositories.RepositorioFornecedor
-import com.quorum.api.redisflag.ChaveAtualizacao
-import com.quorum.api.redisflag.RedisCacheFlag
-import com.quorum.api.redisflag.RepositorioRedisCacheFlag
 import com.quorum.api.utils.ANO_ATUAL
 import com.quorum.api.utils.ANO_INICIO
 import com.quorum.api.utils.MES_ATUAL
@@ -14,12 +11,10 @@ import com.quorum.api.utils.defaultPageable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import parseXmlResponse
-import java.time.ZonedDateTime
 
 @Service
 class ServicoFornecedor(
-    private val repositorioFornecedor: RepositorioFornecedor,
-    private val repositorioRedisCacheFlag: RepositorioRedisCacheFlag
+    private val repositorioFornecedor: RepositorioFornecedor
 ) {
 
     @Transactional
@@ -66,13 +61,6 @@ class ServicoFornecedor(
                 }
             )
         }
-
-        repositorioRedisCacheFlag.save(
-            RedisCacheFlag(
-                id = ChaveAtualizacao.ULTIMA_ATUALIZACAO_FORNECEDORES.name,
-                valor = ZonedDateTime.now()
-            )
-        )
 
         return fornecedoresAdicionados
     }

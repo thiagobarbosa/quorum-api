@@ -4,9 +4,6 @@ import com.quorum.api.connectivity.makePostRequest
 import com.quorum.api.connectivity.obterDebitoVereador
 import com.quorum.api.despesas.modelos.Despesa
 import com.quorum.api.despesas.repositories.RepositorioDespesa
-import com.quorum.api.redisflag.ChaveAtualizacao
-import com.quorum.api.redisflag.RedisCacheFlag
-import com.quorum.api.redisflag.RepositorioRedisCacheFlag
 import com.quorum.api.utils.ANO_ATUAL
 import com.quorum.api.utils.ANO_INICIO
 import com.quorum.api.utils.MES_ATUAL
@@ -14,12 +11,10 @@ import com.quorum.api.utils.defaultPageable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import parseXmlResponse
-import java.time.ZonedDateTime
 
 @Service
 class DespesaService(
-    private val repositorioDespesa: RepositorioDespesa,
-    private val repositorioRedisCacheFlag: RepositorioRedisCacheFlag
+    private val repositorioDespesa: RepositorioDespesa
 ) {
 
     @Transactional
@@ -64,13 +59,6 @@ class DespesaService(
                 }
             )
         }
-
-        repositorioRedisCacheFlag.save(
-            RedisCacheFlag(
-                id = ChaveAtualizacao.ULTIMA_ATUALIZACAO_DESPESAS.name,
-                valor = ZonedDateTime.now()
-            )
-        )
 
         return despesasAdicionadas
     }
