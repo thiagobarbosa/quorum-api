@@ -17,6 +17,7 @@ import com.quorum.api.vereadores.servicos.ServicoVereador
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import parseXmlResponse
+import kotlin.math.min
 
 @Service
 class ServicoReembolso(
@@ -27,29 +28,42 @@ class ServicoReembolso(
 ) {
 
     @Transactional
-    fun apagarTodosReembolsos(): List<ItemReembolso> {
-        val reembolsos = repositorioReembolso.findAll().toList()
-        repositorioReembolso.deleteAll(reembolsos)
-        return reembolsos
+    fun apagarTodosReembolsos(): Boolean {
+        repositorioReembolso.deleteAll()
+        return true
     }
 
     @Transactional
-    fun atualizarReembolsos(ano: Int): List<ItemReembolso> {
+    fun atualizarReembolsos(ano: Int, mes: Int? = null): List<ItemReembolso> {
         if (ano > ANO_ATUAL || ano < ANO_INICIO) {
             throw Exception("Dados disponiveis somente a partir de $ANO_INICIO até $ANO_ATUAL")
         }
 
-        // Já que a API fonte nao possui uma chave unica para reembolsos, apagamos todos os reembolsos do ano
-        val reembolsosExistentesAno = repositorioReembolso.findAllByAno(ano)
-        repositorioReembolso.deleteAll(reembolsosExistentesAno)
+        // calculate o ultimo mes disponivel para ser processado
+        val ultimoMesDisponivel = if (ano == ANO_ATUAL) MES_ATUAL.minus(1) else 12
+
+        mes?.let {
+            if (it > ultimoMesDisponivel || it < 1) {
+                throw Exception("Dados disponiveis somente a partir de $ANO_INICIO até $ANO_ATUAL no mes $ultimoMesDisponivel")
+            }
+        }
+
+        // define o mes inicial a ser processado
+        val mesInicial = mes ?: 1
+
+        // limita o mes a ser processado ao ultimo mes disponivel
+        val mesFinal = min(ultimoMesDisponivel, mes ?: ultimoMesDisponivel)
+
+        // Já que a API fonte nao possui uma chave unica para reembolsos, apagamos todos os reembolsos do ano/mes
+        val reembolsosExistentes = if (mes == null) repositorioReembolso.findAllByAno(ano) else repositorioReembolso.findAllByAnoEqualsAndMesEquals(ano, mesFinal)
+        repositorioReembolso.deleteAll(reembolsosExistentes)
 
         val url = obterDebitoVereador
 
-        val ultimoMes = if (ano == ANO_ATUAL) MES_ATUAL.minus(1) else 12
         val reembolsosAdicionados: MutableList<ItemReembolso> = mutableListOf()
 
-        (1..ultimoMes).forEach { mes ->
-            val xmlResponse = makePostRequest(url, ano, mes)
+        (mesInicial..mesFinal).forEach { mesProcessado ->
+            val xmlResponse = makePostRequest(url, ano, mesProcessado)
             val responseObj = parseXmlResponse(xmlResponse)
 
             repositorioReembolso.findById(responseObj.items.first().idVereador).ifPresent {
