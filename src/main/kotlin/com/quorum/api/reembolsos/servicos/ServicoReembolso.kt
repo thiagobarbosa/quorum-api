@@ -60,7 +60,7 @@ class ServicoReembolso(
                 responseObj.items.map {
                     val cnpjFormatado = it.cnpj.replace(".", "").replace("/", "").replace("-", "")
                     val despesa = despesaService.obterDespesaPorNome(it.nomeDespesa) ?: despesaService.criarDespesa(Despesa(nomeCategoria = it.nomeDespesa))
-                    val vereador = servicoVereador.obterVereadorPorNome(it.nomeVereador) ?: servicoVereador.criarVereador(Vereador(id = it.idVereador, nome = it.nomeVereador))
+                    val vereador = servicoVereador.obterVereadorPorId(it.idVereador) ?: servicoVereador.criarVereador(Vereador(id = it.idVereador, nome = it.nomeVereador))
                     val fornecedor = servicoFornecedor.obterFornecedorPorCnpj(cnpjFormatado) ?: servicoFornecedor.criarFornecedor(
                         Fornecedor(cnpj = cnpjFormatado, nome = it.fornecedor)
                     )
