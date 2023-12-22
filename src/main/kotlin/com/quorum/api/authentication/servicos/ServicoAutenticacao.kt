@@ -41,7 +41,7 @@ class ServicoAutenticacao(
         }
 
         val token = UUID.randomUUID().toString()
-        servicoEmail.sendEmail(email, "Your Quorum API token", token)
+        servicoEmail.sendEmail(email, "Seu token privado foi criado com sucesso", token)
         val tokenSalvo = repositorioAutenticacao.save(Autenticacao(token = token, dataExpiracao = ZonedDateTime.now().plusDays(365), role = "USER", email = email))
         return Autenticacao(token = "token enviado por email", dataExpiracao = tokenSalvo.dataExpiracao, role = tokenSalvo.role, email = tokenSalvo.email)
     }
