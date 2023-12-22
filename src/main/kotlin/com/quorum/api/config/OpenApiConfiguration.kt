@@ -8,7 +8,6 @@ import org.springdoc.core.GroupedOpenApi
 import org.springdoc.core.customizers.OpenApiCustomiser
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import java.util.*
 
 @Configuration
 @OpenAPIDefinition(
@@ -21,18 +20,7 @@ class OpenApiConfiguration {
         return GroupedOpenApi.builder()
             .group("User API")
             .pathsToMatch("/v1/**")
-            .pathsToExclude("/v1/admin")
-            .pathsToExclude("/v1/admin/**")
-            .addOpenApiCustomiser(sortPathsCustomizer())
-            .build()
-    }
-
-    @Bean
-    fun adminApi(): GroupedOpenApi {
-        return GroupedOpenApi.builder()
-            .group("Admin API")
-            .pathsToMatch("/v1/admin")
-            .pathsToMatch("/v1/admin/**")
+            .pathsToExclude("/v1/admin", "/v1/admin/**")
             .addOpenApiCustomiser(sortPathsCustomizer())
             .build()
     }
