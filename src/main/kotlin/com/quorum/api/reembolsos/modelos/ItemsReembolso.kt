@@ -17,14 +17,14 @@ import javax.persistence.Table
 data class ItemsReembolso(
     @JacksonXmlElementWrapper(useWrapping = false)
     @JacksonXmlProperty(localName = "TabelaPortalITEMREEMBOLSO")
-    val items: List<ItemReembolso>
+    val items: List<Reembolso>
 )
 
 @Entity
 @Table(name = "item_reembolso")
 @EntityListeners(AuditingEntityListener::class)
 @NoArgConstructor
-data class ItemReembolso(
+data class Reembolso(
     @Id
     @Column(name = "id")
     val id: String = UUID.randomUUID().toString(),

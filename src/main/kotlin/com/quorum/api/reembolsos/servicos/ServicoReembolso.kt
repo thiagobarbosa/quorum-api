@@ -6,7 +6,7 @@ import com.quorum.api.despesas.modelos.Despesa
 import com.quorum.api.despesas.servicos.DespesaService
 import com.quorum.api.fornecedores.modelos.Fornecedor
 import com.quorum.api.fornecedores.servicos.ServicoFornecedor
-import com.quorum.api.reembolsos.modelos.ItemReembolso
+import com.quorum.api.reembolsos.modelos.Reembolso
 import com.quorum.api.reembolsos.repositories.ReembolsoSpecification
 import com.quorum.api.reembolsos.repositories.RepositorioReembolso
 import com.quorum.api.utils.ANO_ATUAL
@@ -35,7 +35,7 @@ class ServicoReembolso(
     }
 
     @Transactional
-    fun atualizarReembolsos(ano: Int, mes: Int? = null): List<ItemReembolso> {
+    fun atualizarReembolsos(ano: Int, mes: Int? = null): List<Reembolso> {
         if (ano > ANO_ATUAL || ano < ANO_INICIO) {
             throw Exception("Dados disponiveis somente a partir de $ANO_INICIO até $ANO_ATUAL")
         }
@@ -61,7 +61,7 @@ class ServicoReembolso(
 
         val url = obterDebitoVereador
 
-        val reembolsosAdicionados: MutableList<ItemReembolso> = mutableListOf()
+        val reembolsosAdicionados: MutableList<Reembolso> = mutableListOf()
 
         (mesInicial..mesFinal).forEach { mesProcessado ->
             val xmlResponse = makePostRequest(url, ano, mesProcessado)
@@ -79,7 +79,7 @@ class ServicoReembolso(
                     val fornecedor = servicoFornecedor.obterFornecedorPorCnpj(cnpjFormatado) ?: servicoFornecedor.criarFornecedor(
                         Fornecedor(cnpj = cnpjFormatado, nome = it.fornecedor)
                     )
-                    ItemReembolso(
+                    Reembolso(
                         idVereador = vereador.id,
                         nomeVereador = vereador.nome,
                         idCentroCusto = it.idCentroCusto,
@@ -102,7 +102,7 @@ class ServicoReembolso(
         return reembolsosAdicionados
     }
 
-    fun obterTodosReembolsos(idVereador: String?, idDespesa: String?, cnpj: String?, ano: Int?, mes: Int?, page: Int? = 0, pageSize: Int? = 100): List<ItemReembolso> {
+    fun obterTodosReembolsos(idVereador: String?, idDespesa: String?, cnpj: String?, ano: Int?, mes: Int?, page: Int? = 0, pageSize: Int? = 100): List<Reembolso> {
         val specification = ReembolsoSpecification(idVereador, idDespesa, cnpj, ano, mes)
         return repositorioReembolso.findAll(specification, defaultPageable(page, pageSize)).content
     }

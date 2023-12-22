@@ -1,6 +1,6 @@
 package com.quorum.api.reembolsos.repositories
 
-import com.quorum.api.reembolsos.modelos.ItemReembolso
+import com.quorum.api.reembolsos.modelos.Reembolso
 import org.springframework.data.jpa.domain.Specification
 import javax.persistence.criteria.CriteriaBuilder
 import javax.persistence.criteria.CriteriaQuery
@@ -13,9 +13,9 @@ class ReembolsoSpecification(
     private val cnpj: String?,
     private val ano: Int?,
     private val mes: Int?
-) : Specification<ItemReembolso> {
+) : Specification<Reembolso> {
 
-    override fun toPredicate(root: Root<ItemReembolso>, query: CriteriaQuery<*>, cb: CriteriaBuilder): Predicate? {
+    override fun toPredicate(root: Root<Reembolso>, query: CriteriaQuery<*>, cb: CriteriaBuilder): Predicate? {
         val predicates = mutableListOf<Predicate>()
 
         idVereador?.let {

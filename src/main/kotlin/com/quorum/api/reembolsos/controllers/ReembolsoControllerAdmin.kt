@@ -1,6 +1,6 @@
 package com.quorum.api.reembolsos.controllers
 
-import com.quorum.api.reembolsos.modelos.ItemReembolso
+import com.quorum.api.reembolsos.modelos.Reembolso
 import com.quorum.api.reembolsos.servicos.ServicoReembolso
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
@@ -31,7 +31,7 @@ class ReembolsoControllerAdmin(
             ApiResponse(
                 responseCode = "200",
                 description = "Sucesso",
-                content = [Content(mediaType = "application/json", schema = Schema(implementation = ItemReembolso::class))]
+                content = [Content(mediaType = "application/json", schema = Schema(implementation = Reembolso::class))]
             ),
             ApiResponse(
                 responseCode = "400",
@@ -51,7 +51,7 @@ class ReembolsoControllerAdmin(
         @Parameter(description = "Mes do reembolso")
         @RequestParam(required = false)
         mes: Int?
-    ): List<ItemReembolso> {
+    ): List<Reembolso> {
         return servicoReembolso.atualizarReembolsos(ano, mes)
     }
 
@@ -62,7 +62,7 @@ class ReembolsoControllerAdmin(
             ApiResponse(
                 responseCode = "200",
                 description = "Sucesso",
-                content = [Content(mediaType = "application/json", schema = Schema(implementation = ItemReembolso::class))]
+                content = [Content(mediaType = "application/json", schema = Schema(implementation = Reembolso::class))]
             ),
             ApiResponse(
                 responseCode = "400",
