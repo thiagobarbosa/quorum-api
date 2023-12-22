@@ -15,7 +15,7 @@ Com isso em mente, este projeto obtém os dados do sistema SisGV, mapeia esses d
 
 ## Endpoints
 Todos os endpoints podem ser encontrados na página do [Swagger](https://api.quorum-tech.io/swagger-ui/index.html?urls.primaryName=User%20API).
-Também há uma coleção do Postman que você pode baixar [aqui](https://api.quorum-tech.io/postman/Quorum.postman_collection.json).
+Também há uma coleção do Postman que você pode baixar [aqui](https://www.postman.com/thiagobarbosa-br/workspace/quorum).
 
 ## Casos de uso comuns
 Estes são alguns casos de uso comuns que você pode fazer com esta API:
