@@ -19,7 +19,7 @@ Também há uma coleção do Postman que você pode baixar [aqui](https://www.po
 
 ## Casos de uso comuns
 Estes são alguns casos de uso comuns que você pode fazer com esta API:
-
+<br/><br/>
 <details>
 <summary>Obter todos os gastos de um vereador</summary>
 
