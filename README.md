@@ -221,6 +221,7 @@ GET /v1/reembolsos?ano=2022
 
 </details>
 
+<br/>
 
 ## Sobre autenticação
 Para usar esta API, você precisa de um token de autenticação. Existem 2 tipos de tokens que você pode obter: um token público ou privado.
