@@ -5,7 +5,7 @@ Este projeto contém o código fonte de uma API para obter os gastos públicos d
 Os dados são fornecidos pelo [sistema SisGV](https://www.saopaulo.sp.leg.br/transparencia/dados-abertos/dados-disponibilizados-em-formato-aberto), disponíveis publicamente sob a Lei de Acesso à Informação do Brasil.
 
 ## Motivação
-Os dados fornecidos pelo sistema da prefeitura de São Paulo não são muito amigáveis ou práticos, pois apresentam as seguintes características:
+Os dados fornecidos pelo sistema da prefeitura de São Paulo não são muito amigáveis ou práticos:
 - É uma API SOAP, que não é muito moderno
 - Não é muito bem documentada
 - Não é muito bem estruturada, já que os objetos nas respostas não são tipados adequadamente. Na maioria das vezes, os registros sequer possuem uma chave única
