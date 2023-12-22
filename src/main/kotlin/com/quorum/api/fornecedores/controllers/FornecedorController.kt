@@ -23,7 +23,8 @@ class FornecedorController(
 ) {
     @Operation(
         summary = "Listar fornecedores",
-        description = "Lista todos os fornecedores.",
+        description = "Lista todos os fornecedores." +
+            "\n\nNeste contexto, um 'fornecedor' é uma empresa ou pessoa jurídica que fornece produtos ou serviços para a Câmara dos Deputados.",
         responses = [
             ApiResponse(
                 responseCode = "200",

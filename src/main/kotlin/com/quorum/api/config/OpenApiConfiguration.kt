@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration
 
 @Configuration
 @OpenAPIDefinition(
-    info = Info(title = "Quorum API", version = "v1"),
+    info = Info(title = "Quorum API", version = "v1", description = "API de acesso aos dados de gastos da Câmara de Vereadores de São Paulo"),
     servers = [Server(url = "https://api.quorum-tech.io")]
 )
 class OpenApiConfiguration {

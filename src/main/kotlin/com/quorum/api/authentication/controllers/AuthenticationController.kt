@@ -15,14 +15,36 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@Tag(name = "1. Autenticacao", description = "Endpoints parar criacao de autenticacao")
+@Tag(name = "1. Autenticação", description = "Endpoints para criacao de tokens de autenticação")
 @RequestMapping("/v1/auth")
 class AuthenticationController(
     private val servicoAutenticacao: ServicoAutenticacao
 ) {
     @Operation(
+        summary = "Criar token publico",
+        description = "Cria um token publico para acesso aos endpoints.\n\nEste token permite apenas 10 requisicoes por minuto e expira após 7 dias.",
+        responses = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Sucesso",
+                content = [Content(mediaType = "application/json", schema = Schema(implementation = Autenticacao::class))]
+            ),
+            ApiResponse(
+                responseCode = "400",
+                description = "Acesso negado"
+            )
+        ]
+    )
+    @PostMapping("/publico/criar")
+    fun generatePublicToken(): Autenticacao {
+        return servicoAutenticacao.criarTokenPublico()
+    }
+
+    @Operation(
         summary = "Criar token privado",
-        description = "Cria um token privado para acesso aos endpoints restritos",
+        description = "Cria um token privado para acesso aos endpoints. " +
+            "\n\nEste token permite 100 requisicoes por minuto e expira após 365 dias." +
+            "\n\nO token será enviado para o email informado na requisicao.",
         responses = [
             ApiResponse(
                 responseCode = "200",
@@ -43,25 +65,5 @@ class AuthenticationController(
         @RequestParam email: String
     ): Autenticacao {
         return servicoAutenticacao.criarTokenPrivado(email)
-    }
-
-    @Operation(
-        summary = "Criar token publico",
-        description = "Cria um token publico para acesso aos endpoints restritos",
-        responses = [
-            ApiResponse(
-                responseCode = "200",
-                description = "Sucesso",
-                content = [Content(mediaType = "application/json", schema = Schema(implementation = Autenticacao::class))]
-            ),
-            ApiResponse(
-                responseCode = "400",
-                description = "Acesso negado"
-            )
-        ]
-    )
-    @PostMapping("/publico/criar")
-    fun generatePublicToken(): Autenticacao {
-        return servicoAutenticacao.criarTokenPublico()
     }
 }

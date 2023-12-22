@@ -23,7 +23,8 @@ class DespesaController(
 ) {
     @Operation(
         summary = "Listar despesas",
-        description = "Lista todas as despesas.",
+        description = "Lista todas as despesas." +
+            "\n\nNeste contexto, uma 'despesa' é uma categoria de gasto, como 'correios', 'estacionamento' ou 'locacao de veículos' .",
         responses = [
             ApiResponse(
                 responseCode = "200",

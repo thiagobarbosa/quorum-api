@@ -23,7 +23,9 @@ class ReembolsoController(
 
     @Operation(
         summary = "Listar reembolsos",
-        description = "Lista todos os reembolsos de acordo com os filtros informados.",
+        description = "Lista todos os reembolsos de acordo com os filtros informados." +
+            "\n\nNeste contexto, um 'reembolso' é uma solicitação feita por um vereador após uma despesa ser realizada." +
+            "\n\nOs reembolsos são reportados mensalmente e contém informações como o ID do vereador, o CNPJ do fornecedor, o valor da despesa, etc.",
         responses = [
             ApiResponse(
                 responseCode = "200",
