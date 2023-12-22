@@ -252,4 +252,4 @@ Each email address can only have 1 private token.
 If you want to contribute to this project, feel free to open a pull request or start a discussion in the issues section.
 
 ## License
-This project is licensed under the MIT License.
+This project is under the [MIT license](https://github.com/thiagobarbosa/quorum-api/tree/main?tab=MIT-1-ov-file).
