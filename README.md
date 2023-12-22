@@ -258,6 +258,14 @@ Tokens privados podem fazer até 100 solicitações por minuto e expiram após 1
 Cada e-mail pode ter somente um token privado.
 </details>
 
+## Tecnologias
+- Java 17 / Kotlin
+- Spring Boot
+- MySQL
+- Hibernate / Liquibase
+
+A API está hospedada no Google Cloud, usando o App Engine e o Cloud SQL.
+
 ## Contribuições
 Se você quiser contribuir para este projeto, sinta-se à vontade para abrir um pull request ou iniciar uma discussão via issues.
 
