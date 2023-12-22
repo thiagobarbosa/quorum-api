@@ -1,13 +1,25 @@
 # Quorum API
 
 ## Introduction
-This is a simple API for getting all the money expends of Sao Paulo's City Council members.
+This is an API for getting all the money expends for the members of Sao Paulo's City Council.
+The data is provided by the [SisGV system](https://www.saopaulo.sp.leg.br/transparencia/dados-abertos/dados-disponibilizados-em-formato-aberto), 
+publicly available under Brazil's Information Access Law.
+
+## Motivation
+The data provided by Sao Paulo city government is not very user-friendly since it has these characteristics:
+- It's SOAP API, which is not very modern
+- It's not very well documented
+- It's not very well-structured since the objects in the responses are not properly typed. Most of the time them don't even have a unique key
+- You can only make requests by filtering for a specific year and month, which makes it hard to get all the data at once or apply filters
+
+So this project fetches the data from the SisGV system, map those data into proper data types, save them on a database and expose them on friendlier REST endpoints.
 
 ## Endpoints
 All the endpoints can be found in the [swagger documentation](https://api.quorum-tech.io/swagger-ui/index.html?urls.primaryName=User%20API).
 There's also a Postman collection you can download from [here](https://api.quorum-tech.io/postman/Quorum.postman_collection.json).
 
 ## Common use cases
+These are some common use cases you can do with this API:
 
 <details>
 <summary>Get all the expends for a specific council member</summary>
@@ -209,3 +221,35 @@ GET /v1/reembolsos?ano=2022
 ```
 
 </details>
+
+
+## About authentication
+In order to use this API you need an authentication token. There are 2 types of tokens you can have: a public or a private token.
+
+### Public token
+This is a token you can freely generate without any personal information. It's useful for testing purposes or if you just want to explore the API. 
+You can generate calling this endpoint:
+``` 
+POST /v1/auth/publico/criar
+```
+Public tokens can only make up to 10 requests per minute and expires after 7 days.
+
+### Private token
+This is a token you can generate using your personal email address. It's useful if you want to use the API in a production environment, or if you want to consistently use the API for your own purposes.
+You can generate calling this endpoint:
+``` 
+POST /v1/auth/privado/criar
+
+Parameter:
+email: <String>
+(use form URL Encoded)
+```
+The token will be sent to your email address. 
+Private tokens can make up to 100 requests per minute and expires after 1 year.
+Each email address can only have 1 private token.
+
+## Contributing
+If you want to contribute to this project, feel free to open a pull request or start a discussion in the issues section.
+
+## License
+This project is licensed under the MIT License.
