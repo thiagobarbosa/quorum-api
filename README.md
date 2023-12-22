@@ -1,34 +1,33 @@
 # Quorum API
 
-## Introduction
-This is an API for getting all the money expends for the members of Sao Paulo's City Council.
-The data is provided by the [SisGV system](https://www.saopaulo.sp.leg.br/transparencia/dados-abertos/dados-disponibilizados-em-formato-aberto), 
-publicly available under Brazil's Information Access Law.
+## Introdução
+Este projeto contém o código fonte de uma API para obter os gastos públicos dos membros da Câmara Municipal de São Paulo.
+Os dados são fornecidos pelo [sistema SisGV](https://www.saopaulo.sp.leg.br/transparencia/dados-abertos/dados-disponibilizados-em-formato-aberto), disponíveis publicamente sob a Lei de Acesso à Informação do Brasil.
 
-## Motivation
-The data provided by Sao Paulo city government is not very user-friendly since it has these characteristics:
-- It's SOAP API, which is not very modern
-- It's not very well documented
-- It's not very well-structured since the objects in the responses are not properly typed. Most of the time them don't even have a unique key
-- You can only make requests by filtering for a specific year and month, which makes it hard to get all the data at once or apply filters
+## Motivação
+Os dados fornecidos pelo sistema da prefeitura de São Paulo não são muito amigáveis ou práticos, pois apresentam as seguintes características:
+- É uma API SOAP, que não é muito moderno
+- Não é muito bem documentada
+- Não é muito bem estruturada, já que os objetos nas respostas não são tipados adequadamente. Na maioria das vezes, os registros sequer possuem uma chave única
+- Só é possível fazer solicitações filtrando por um ano e mês específicos, o que dificulta obter todos os dados de uma só vez ou aplicar filtros durante a requisição
 
-So this project fetches the data from the SisGV system, map those data into proper data types, save them on a database and expose them on friendlier REST endpoints.
+Com isso em mente, este projeto obtém os dados do sistema SisGV, mapeia esses dados em estruturas adequadas, salva-os em um banco de dados e os expõe em endpoints REST mais fáceis de consumir.
 
 ## Endpoints
-All the endpoints can be found in the [swagger documentation](https://api.quorum-tech.io/swagger-ui/index.html?urls.primaryName=User%20API).
-There's also a Postman collection you can download from [here](https://api.quorum-tech.io/postman/Quorum.postman_collection.json).
+Todos os endpoints podem ser encontrados na página do [Swagger](https://api.quorum-tech.io/swagger-ui/index.html?urls.primaryName=User%20API).
+Também há uma coleção do Postman que você pode baixar [aqui](https://api.quorum-tech.io/postman/Quorum.postman_collection.json).
 
-## Common use cases
-These are some common use cases you can do with this API:
+## Casos de uso comuns
+Estes são alguns casos de uso comuns que você pode fazer com esta API:
 
 <details>
-<summary>Get all the expends for a specific council member</summary>
+<summary>Obter todos os gastos de um vereador</summary>
 
-### Request
+### Requisição
 ``` 
 GET /v1/reembolsos?idVereador=1386 
 ```
-### Response
+### Resposta
 ```
 [
 	{
@@ -88,14 +87,14 @@ GET /v1/reembolsos?idVereador=1386
 
 <br/>
 <details>
-<summary> Get all the money expends for all councils on a specific year</summary>
+<summary> Obter os gastos de todos os vereadores em um ano específico </summary>
 
 ### 
-### Request
+### Requisição
 ``` 
 GET /v1/reembolsos?ano=2022 
 ```
-### Response
+### Resposta
 ```
 [
     {
@@ -156,14 +155,14 @@ GET /v1/reembolsos?ano=2022
 <br/>
 
 <details>
-<summary> Get all the expends paid for some specific supplier</summary>
+<summary>Obter todos os gastos feitos para uma empresa específica</summary>
 
-### Request
+### Requisição
 ``` 
 /v1/reembolsos?cnpj=07679089000103
 ```
 
-### Sample response:
+### Resposta:
 ```
 [
 	{
@@ -223,20 +222,30 @@ GET /v1/reembolsos?ano=2022
 </details>
 
 
-## About authentication
-In order to use this API you need an authentication token. There are 2 types of tokens you can have: a public or a private token.
+## Sobre autenticação
+Para usar esta API, você precisa de um token de autenticação. Existem 2 tipos de tokens que você pode obter: um token público ou privado.
 
-### Public token
-This is a token you can freely generate without any personal information. It's useful for testing purposes or if you just want to explore the API. 
-You can generate calling this endpoint:
+<details>
+<summary>Token público</summary>
+
+Este é um token que você pode gerar livremente sem qualquer informação pessoal. Ele é útil para fins de testes ou se você apenas quiser explorar a API.
+Você pode gerá-lo através deste endpoint:
 ``` 
 POST /v1/auth/publico/criar
 ```
-Public tokens can only make up to 10 requests per minute and expires after 7 days.
+Tokens públicos só podem fazer até 10 solicitações por minuto e expiram após 7 dias.
 
-### Private token
-This is a token you can generate using your personal email address. It's useful if you want to use the API in a production environment, or if you want to consistently use the API for your own purposes.
-You can generate calling this endpoint:
+</details>
+
+<br/>
+
+<details>
+<summary>Token privado</summary>
+
+Este é um token que você pode gerar usando seu endereço de e-mail. É útil se você quiser usar a API em um ambiente de produção, 
+ou se quiser usar a API com maior frequência.
+Você pode gerá-lo através deste endpoint:
+
 ``` 
 POST /v1/auth/privado/criar
 
@@ -244,12 +253,14 @@ Parameter:
 email: <String>
 (use form URL Encoded)
 ```
-The token will be sent to your email address. 
-Private tokens can make up to 100 requests per minute and expires after 1 year.
-Each email address can only have 1 private token.
 
-## Contributing
-If you want to contribute to this project, feel free to open a pull request or start a discussion in the issues section.
+O token será enviado para o seu endereço de e-mail.
+Tokens privados podem fazer até 100 solicitações por minuto e expiram após 1 ano.
+Cada e-mail pode ter somente um token privado.
+</details>
 
-## License
-This project is under the [MIT license](https://github.com/thiagobarbosa/quorum-api/tree/main?tab=MIT-1-ov-file).
+## Contribuições
+Se você quiser contribuir para este projeto, sinta-se à vontade para abrir um pull request ou iniciar uma discussão via issues.
+
+## Licença
+Este projeto está sob a [licença MIT](https://github.com/thiagobarbosa/quorum-api/tree/main?tab=MIT-1-ov-file).
